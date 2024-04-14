@@ -1,0 +1,37 @@
+{
+  "Routes": [
+    // User Web API
+    {
+      "UpstreamPathTemplate": "/api/User",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "userwebapi",
+          "Port": 8081
+        }
+      ],
+      "DownstreamPathTemplate": "/api/User",
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/api/User/{entryId}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "userwebapi",
+          "Port": 8081
+        }
+      ],
+      "DownstreamPathTemplate": "/api/User/{entryId}",
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }
+    // add more routes here
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:800"
+  }
+}
