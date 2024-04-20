@@ -41,4 +41,15 @@ services:
     ports:
       - "8001:8081"
       - "8002:8080"
+  
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    hostname: rmq
+    networks:
+      - backend
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    
 
