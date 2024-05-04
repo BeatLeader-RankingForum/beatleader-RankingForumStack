@@ -5,7 +5,8 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "userwebapi": "StartDebugging",
-        "apigateway": "StartDebugging"
+        "apigateway": "StartDebugging",
+        "discussionservice": "StartDebugging"
       }
     }
   }

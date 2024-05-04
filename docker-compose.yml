@@ -41,4 +41,24 @@ services:
     ports:
       - "8001:8081"
       - "8002:8080"
+  
+  rankingforum-mq:
+    image: rabbitmq:3-management
+    container_name: RankingForum.RabbitMQ
+    hostname: rankingforum-mq
+    volumes:
+      - ./.containers/queue/data/:/var/lib/rabbitmq
+      - ././containers/queue/log/:var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - backend
+
+
+  discussionservice:
+    image: ${DOCKER_REGISTRY-}discussionservice
+    build:
+      context: .
+      dockerfile: DiscussionService/Dockerfile
 
