@@ -1,0 +1,3 @@
+[submodule "beatleader-server-models"]
+	path = beatleader-server-models
+	url = https://github.com/BeatLeader/beatleader-server-models
