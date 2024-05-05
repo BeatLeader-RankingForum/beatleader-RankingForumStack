@@ -45,9 +45,9 @@ namespace DiscussionService.Controllers
         // PUT: api/MapDiscussions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMapDiscussion(Guid id, MapDiscussion mapDiscussion)
+        public async Task<IActionResult> PutMapDiscussion(int id, MapDiscussion mapDiscussion)
         {
-            if (id != mapDiscussion.MapDiscussionId)
+            if (id != mapDiscussion.Id)
             {
                 return BadRequest();
             }
@@ -81,12 +81,12 @@ namespace DiscussionService.Controllers
             _context.MapDiscussions.Add(mapDiscussion);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMapDiscussion", new { id = mapDiscussion.MapDiscussionId }, mapDiscussion);
+            return CreatedAtAction("GetMapDiscussion", new { id = mapDiscussion.Id }, mapDiscussion);
         }
 
         // DELETE: api/MapDiscussions/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMapDiscussion(Guid id)
+        public async Task<IActionResult> DeleteMapDiscussion(int id)
         {
             var mapDiscussion = await _context.MapDiscussions.FindAsync(id);
             if (mapDiscussion == null)
@@ -100,9 +100,9 @@ namespace DiscussionService.Controllers
             return NoContent();
         }
 
-        private bool MapDiscussionExists(Guid id)
+        private bool MapDiscussionExists(int id)
         {
-            return _context.MapDiscussions.Any(e => e.MapDiscussionId == id);
+            return _context.MapDiscussions.Any(e => e.Id == id);
         }
     }
 }

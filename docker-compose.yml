@@ -1,7 +1,9 @@
 version: '3.4'
 
 networks:
-  backend:
+  backend-common:
+  backend-discussion:
+  userdemo:
 
 
 
@@ -13,7 +15,7 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=SuperStrong!
     networks:
-      - backend
+      - userdemo
     ports:
       - "18001:1433"
 
@@ -28,7 +30,35 @@ services:
       - DB_NAME=user
       - DB_SA_PASSWORD=SuperStrong!
     networks:
-      - backend
+      - backend-common
+      - userdemo
+
+  discussion-service:
+    container_name: discussion-service
+    image: ${DOCKER_REGISTRY-}discussionservice
+    build:
+      context: .
+      dockerfile: DiscussionService/Dockerfile
+    environment:
+      - DB_HOST=discussion-db
+      - DB_NAME=discussion
+      - DB_SA_PASSWORD=SuperStrong!
+    networks:
+      - backend-common
+      - backend-discussion
+  
+  discussion-db:
+    container_name: discussion-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SuperStrong!
+    networks:
+      - backend-discussion
+    ports:
+      - "39001:1433"
+
+
 
   apigateway:
     container_name: api-gateway
@@ -37,7 +67,7 @@ services:
       context: .
       dockerfile: ApiGateway/Dockerfile
     networks:
-      - backend
+      - backend-common
     ports:
       - "8001:8081"
       - "8002:8080"
@@ -53,12 +83,5 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     networks:
-      - backend
-
-
-  discussionservice:
-    image: ${DOCKER_REGISTRY-}discussionservice
-    build:
-      context: .
-      dockerfile: DiscussionService/Dockerfile
+      - backend-common
 

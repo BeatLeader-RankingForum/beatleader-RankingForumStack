@@ -12,6 +12,15 @@ namespace DiscussionService
         public DbSet<MapDiscussion> MapDiscussions { get; set; }
         public DbSet<Discussion> Discussions { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<MapDiscussion>()
+                .HasIndex(d => d.MapsetId)
+                .IsUnique();
+        }
+
         internal static void ApplyMigrations(IHost app)
         {
             using (var scope = app.Services.CreateScope())
