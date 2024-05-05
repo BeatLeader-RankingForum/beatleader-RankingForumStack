@@ -19,6 +19,10 @@ namespace DiscussionService
             modelBuilder.Entity<MapDiscussion>()
                 .HasIndex(d => d.MapsetId)
                 .IsUnique();
+
+            modelBuilder.Entity<Discussion>()
+                .HasIndex(d => new { d.MapDiscussionId, d.Phase })
+                .IsUnique();
         }
 
         internal static void ApplyMigrations(IHost app)

@@ -11,6 +11,10 @@ namespace DiscussionService.Models
         public int Id { get; set; }
         [NotMapped]
         public string HexId => Id.ToString("X");
+        [ForeignKey("MapDiscussion")]
+        public int MapDiscussionId { get; set; }
+
+        public PhaseEnum Phase { get; set; }
 
         public int Characteristic { get; set; }
         public int Difficulty { get; set; }
@@ -18,5 +22,13 @@ namespace DiscussionService.Models
         public DateTime CreatedOnUtc { get; set; } = DateTime.UtcNow;
 
         public bool IsLocked { get; set; }
+    }
+
+    public enum PhaseEnum
+    {
+        Phase1 = 0, // pre-nomination
+        Phase2 = 1, // pre-qualification
+        Phase3 = 2, // post-qualification
+
     }
 }
