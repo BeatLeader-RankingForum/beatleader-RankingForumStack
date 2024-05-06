@@ -13,9 +13,9 @@
 
     public enum LogicResponseType
     {
+        None,
         NotFound,
         Conflict,
-        BadRequest,
-        None
+        BadRequest
     }
 }
