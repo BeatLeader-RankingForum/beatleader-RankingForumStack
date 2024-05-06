@@ -86,4 +86,6 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
     networks:
       - backend-common
+    ports:
+      - "15672:15672"
 

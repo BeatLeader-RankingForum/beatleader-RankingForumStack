@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using DiscussionService;
 using DiscussionService.Models;
 using DiscussionService.DTOs;
+using MassTransit;
+using Contracts;
 
 namespace DiscussionService.Controllers
 {
@@ -16,10 +18,12 @@ namespace DiscussionService.Controllers
     public class MapDiscussionsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public MapDiscussionsController(AppDbContext context)
+        public MapDiscussionsController(AppDbContext context, IPublishEndpoint publishEndpoint)
         {
             _context = context;
+            _publishEndpoint = publishEndpoint;
         }
 
         // GET: api/MapDiscussions
@@ -29,11 +33,24 @@ namespace DiscussionService.Controllers
             return await _context.MapDiscussions.AsNoTracking().Include(x => x.Discussions).ToListAsync();
         }
 
-        // GET: api/MapDiscussions/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MapDiscussion>> GetMapDiscussion(int id)
+        // GET: api/MapDiscussions/by-id?mapDiscussionId=5
+        [HttpGet("by-id")]
+        public async Task<ActionResult<MapDiscussion>> GetMapDiscussion([FromQuery] int? mapDiscussionId, [FromQuery] string? mapsetId)
         {
-            var mapDiscussion = await _context.MapDiscussions.FindAsync(id);
+            MapDiscussion? mapDiscussion;
+
+            if (mapDiscussionId.HasValue)
+            {
+                mapDiscussion = await _context.MapDiscussions.Include(x => x.Discussions).FirstOrDefaultAsync(x => x.Id == mapDiscussionId);
+            }
+            else if (mapsetId != null)
+            {
+                mapDiscussion = await _context.MapDiscussions.Include(x => x.Discussions).FirstOrDefaultAsync(x => x.MapsetId == mapsetId);
+            }
+            else
+            {
+                return BadRequest("A valid ID must be provided.");
+            }
 
             if (mapDiscussion == null)
             {
@@ -41,6 +58,8 @@ namespace DiscussionService.Controllers
             }
 
             return mapDiscussion;
+
+
         }
 
         // PUT: api/MapDiscussions/5
@@ -100,6 +119,13 @@ namespace DiscussionService.Controllers
 
             _context.MapDiscussions.Add(mapDiscussion);
             await _context.SaveChangesAsync();
+
+            await _publishEndpoint.Publish(new DiscussionCreatedEvent()
+            {
+                Id = mapDiscussion.Id,
+                MapsetId = mapDiscussion.MapsetId,
+                CreatedOnUtc = mapDiscussion.CreatedOnUtc
+            });
 
             return CreatedAtAction("GetMapDiscussion", new { id = mapDiscussion.Id }, mapDiscussion);
         }

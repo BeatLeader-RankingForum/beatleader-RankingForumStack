@@ -2,7 +2,8 @@
 {
     public record DiscussionCreatedEvent
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
+        public required string MapsetId { get; set; }
         public DateTime CreatedOnUtc { get; set; }
     }
 }
