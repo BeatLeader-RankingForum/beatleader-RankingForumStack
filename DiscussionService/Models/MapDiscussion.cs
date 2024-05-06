@@ -9,8 +9,6 @@ namespace DiscussionService.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [NotMapped]
-        public string HexId => Id.ToString("X");
 
         public required string MapsetId { get; set; } // Must be unique, this can be used as a secondary primary key for use in the front-end
 

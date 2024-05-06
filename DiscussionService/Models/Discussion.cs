@@ -9,8 +9,6 @@ namespace DiscussionService.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [NotMapped]
-        public string HexId => Id.ToString("X");
         [ForeignKey("MapDiscussion")]
         public int MapDiscussionId { get; set; }
 
