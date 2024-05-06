@@ -10,6 +10,7 @@ using DiscussionService.Models;
 using DiscussionService.DTOs;
 using MassTransit;
 using Contracts;
+using DiscussionService.Logic;
 
 namespace DiscussionService.Controllers
 {
@@ -17,13 +18,17 @@ namespace DiscussionService.Controllers
     [ApiController]
     public class MapDiscussionsController : ControllerBase
     {
+        private readonly ILogger<MapDiscussionsController> _logger;
         private readonly AppDbContext _context;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly MapDiscussionLogic _mapDiscussionLogic;
 
-        public MapDiscussionsController(AppDbContext context, IPublishEndpoint publishEndpoint)
+        public MapDiscussionsController(ILogger<MapDiscussionsController> logger, AppDbContext context, IPublishEndpoint publishEndpoint, MapDiscussionLogic mapDiscussionLogic)
         {
+            _logger = logger;
             _context = context;
             _publishEndpoint = publishEndpoint;
+            _mapDiscussionLogic = mapDiscussionLogic;
         }
 
         // GET: api/MapDiscussions
@@ -93,41 +98,31 @@ namespace DiscussionService.Controllers
             return NoContent();
         }
 
-        // POST: api/MapDiscussions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost]
         public async Task<ActionResult<MapDiscussion>> PostMapDiscussion(CreateMapDiscussionDto mapDiscussionDto)
         {
-            if (await _context.MapDiscussions.AnyAsync(x => x.MapsetId == mapDiscussionDto.MapsetId))
+            var result = await _mapDiscussionLogic.CreateMapDiscussion(mapDiscussionDto);
+
+            if (result.Success)
             {
-                return Conflict($"A MapDiscussion already exists for {mapDiscussionDto.MapsetId}");
+                if (result.Data == null)
+                {
+                    _logger.LogError("An error occurred while creating the map discussion. Result data was empty.");
+                    return StatusCode(500, "An error occurred while creating the map discussion.");
+                }
+                return CreatedAtAction("GetMapDiscussion", new { id = result.Data.Id }, result.Data);
             }
-
-            List<Discussion> discussions = new();
-            // TODO: logic to determine which discussions to create
-
-            List<string> owners = new();
-            // TODO: logic to determine owners
-
-
-            MapDiscussion mapDiscussion = new()
+            else
             {
-                MapsetId = mapDiscussionDto.MapsetId,
-                DiscussionOwnerIds = owners,
-                Discussions = discussions
-            };
-
-            _context.MapDiscussions.Add(mapDiscussion);
-            await _context.SaveChangesAsync();
-
-            await _publishEndpoint.Publish(new DiscussionCreatedEvent()
-            {
-                Id = mapDiscussion.Id,
-                MapsetId = mapDiscussion.MapsetId,
-                CreatedOnUtc = mapDiscussion.CreatedOnUtc
-            });
-
-            return CreatedAtAction("GetMapDiscussion", new { id = mapDiscussion.Id }, mapDiscussion);
+                switch (result.Type)
+                {
+                    case LogicResponseType.Conflict:
+                        return Conflict(result.ErrorMessage);
+                    default:
+                        return BadRequest(result.ErrorMessage);
+                }
+            }
         }
 
         [HttpGet("{id}/ownership")]

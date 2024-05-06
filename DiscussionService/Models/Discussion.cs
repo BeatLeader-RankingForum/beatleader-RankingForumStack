@@ -19,7 +19,7 @@ namespace DiscussionService.Models
 
         public DateTime CreatedOnUtc { get; set; } = DateTime.UtcNow;
 
-        public bool IsLocked { get; set; }
+        public bool IsLocked { get; set; } = false;
     }
 
     public enum PhaseEnum

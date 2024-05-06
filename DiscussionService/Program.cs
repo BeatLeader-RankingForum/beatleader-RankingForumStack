@@ -1,4 +1,5 @@
 using DiscussionService;
+using DiscussionService.Logic;
 using MassTransit;
 using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<MapDiscussionLogic>();
 
 string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
 string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-discussion";
