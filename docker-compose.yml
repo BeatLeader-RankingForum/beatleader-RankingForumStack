@@ -2,7 +2,9 @@ version: '3.4'
 
 networks:
   backend-common:
+
   backend-discussion:
+
   userdemo:
 
 
@@ -33,7 +35,7 @@ services:
       - backend-common
       - userdemo
 
-  discussion-service:
+  discussionservice:
     container_name: discussion-service
     image: ${DOCKER_REGISTRY-}discussionservice
     build:
@@ -41,7 +43,7 @@ services:
       dockerfile: DiscussionService/Dockerfile
     environment:
       - DB_HOST=discussion-db
-      - DB_NAME=discussion
+      - DB_NAME=rf-discussion
       - DB_SA_PASSWORD=SuperStrong!
     networks:
       - backend-common
@@ -77,8 +79,8 @@ services:
     container_name: RankingForum.RabbitMQ
     hostname: rankingforum-mq
     volumes:
-      - ./.containers/queue/data/:/var/lib/rabbitmq
-      - ././containers/queue/log/:var/log/rabbitmq
+      - ././containers/queue/data/:/var/lib/rabbitmq
+      - ././containers/queue/log/:/var/log/rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
