@@ -4,3 +4,4 @@ metadata:
   name: rabbitmq-config
 data:
   rabbitmq-url: rabbitmq-service
+  rabbitmq-port: "5672"
