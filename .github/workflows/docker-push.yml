@@ -24,13 +24,13 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Build and push Docker image for UserWebApi
+    - name: Build and push Docker image for DiscussionService
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: ./UserWebApi/Dockerfile
+        file: ./DiscussionService/Dockerfile
         push: true
-        tags: lightai39/rf-userwebapi:latest
+        tags: lightai39/rf-discussionservice:latest
 
     - name: Build and push Docker image for ApiGateway
       uses: docker/build-push-action@v2
