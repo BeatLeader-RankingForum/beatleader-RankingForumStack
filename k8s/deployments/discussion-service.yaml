@@ -22,8 +22,6 @@ spec:
           env:
             - name: ASPNETCORE_HTTP_PORTS
               value: "8080"
-            - name: ASPNETCORE_HTTPS_PORTS
-              value: "8081"
             - name: RABBITMQ_HOST
               valueFrom:
                 configMapKeyRef:
@@ -53,11 +51,9 @@ kind: Service
 metadata:
   name: discussion-service-service
 spec:
-  type: NodePort
   selector:
     app: discussion-service
   ports:
     - protocol: TCP
       port: 8081
       targetPort: 8081
-      nodePort: 30003
