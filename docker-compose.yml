@@ -1,34 +1,44 @@
 version: '3.4'
 
 networks:
-  backend:
+  backend-common:
+
+  backend-discussion:
 
 
 
 services:
-  userdb:
-    container_name: user-db
+
+  discussionservice:
+    container_name: discussion-service
+    image: ${DOCKER_REGISTRY-}discussionservice
+    build:
+      context: .
+      dockerfile: DiscussionService/Dockerfile
+    environment:
+      - DB_HOST=discussion-db
+      - DB_NAME=rf-discussion
+      - DB_SA_PASSWORD=SuperStrong!
+    networks:
+      - backend-common
+      - backend-discussion
+    volumes:
+      - ././containers/discussionservice/data/discussionservice:/app/data
+  
+  discussion-db:
+    container_name: discussion-db
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=SuperStrong!
     networks:
-      - backend
+      - backend-discussion
     ports:
-      - "18001:1433"
+      - "39001:1433"
+    volumes:
+      - ././containers/discussionservice/db/discussiondb:/var/opt/mssql/data
 
-  userwebapi:
-    container_name: user-api
-    image: ${DOCKER_REGISTRY-}userwebapi
-    build:
-      context: .
-      dockerfile: UserWebApi/Dockerfile
-    environment:
-      - DB_HOST=userdb
-      - DB_NAME=user
-      - DB_SA_PASSWORD=SuperStrong!
-    networks:
-      - backend
+
 
   apigateway:
     container_name: api-gateway
@@ -37,19 +47,24 @@ services:
       context: .
       dockerfile: ApiGateway/Dockerfile
     networks:
-      - backend
+      - backend-common
     ports:
+      - "3900:3900"
       - "8001:8081"
       - "8002:8080"
   
-  rabbitmq:
-    container_name: rabbitmq
+  rankingforum-mq:
     image: rabbitmq:3-management
-    hostname: rmq
+    container_name: RankingForum.RabbitMQ
+    hostname: rankingforum-mq
+    volumes:
+      - ././containers/queue/data/:/var/lib/rabbitmq
+      - ././containers/queue/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     networks:
-      - backend
+      - backend-common
     ports:
       - "15672:15672"
       - "5672:5672"
-    
-

@@ -7,7 +7,7 @@
     <ProjectGuid>97e45931-9db9-4b73-9584-d99c80aa0e77</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>userwebapi</DockerServiceName>
+    <DockerServiceName>discussionservice</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

@@ -2,36 +2,23 @@
   "Routes": [
     // User Web API
     {
-      "UpstreamPathTemplate": "/api/User",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
+      "UpstreamPathTemplate": "/api/MapDiscussions/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
+      "DownstreamPathTemplate": "/api/MapDiscussions/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "userwebapi",
+          "Host": "discussionservice",
           "Port": 8081
         }
       ],
-      "DownstreamPathTemplate": "/api/User",
+
       "DangerousAcceptAnyServerCertificateValidator": true
     },
-    {
-      "UpstreamPathTemplate": "/api/User/{entryId}",
-      "UpstreamHttpMethod": [ "Get", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "userwebapi",
-          "Port": 8081
-        }
-      ],
-      "DownstreamPathTemplate": "/api/User/{entryId}",
-      "DangerousAcceptAnyServerCertificateValidator": true
-    }
     // add more routes here
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:800"
+    "BaseUrl": "https://localhost:3900"
   }
 }
