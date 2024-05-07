@@ -5,35 +5,9 @@ networks:
 
   backend-discussion:
 
-  userdemo:
-
 
 
 services:
-  userdb:
-    container_name: user-db
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=SuperStrong!
-    networks:
-      - userdemo
-    ports:
-      - "18001:1433"
-
-  userwebapi:
-    container_name: user-api
-    image: ${DOCKER_REGISTRY-}userwebapi
-    build:
-      context: .
-      dockerfile: UserWebApi/Dockerfile
-    environment:
-      - DB_HOST=userdb
-      - DB_NAME=user
-      - DB_SA_PASSWORD=SuperStrong!
-    networks:
-      - backend-common
-      - userdemo
 
   discussionservice:
     container_name: discussion-service
@@ -48,6 +22,8 @@ services:
     networks:
       - backend-common
       - backend-discussion
+    volumes:
+      - ././containers/discussionservice/data/discussionservice:/app/data
   
   discussion-db:
     container_name: discussion-db
@@ -59,6 +35,8 @@ services:
       - backend-discussion
     ports:
       - "39001:1433"
+    volumes:
+      - ././containers/discussionservice/db/discussiondb:/var/opt/mssql/data
 
 
 
@@ -71,6 +49,7 @@ services:
     networks:
       - backend-common
     ports:
+      - "3900:3900"
       - "8001:8081"
       - "8002:8080"
   
@@ -89,4 +68,3 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-
