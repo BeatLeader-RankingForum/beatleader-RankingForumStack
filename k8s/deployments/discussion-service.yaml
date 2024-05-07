@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discussion-service-deployment
+  labels:
+    app: discussion-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discussion-service
+  template:
+    metadata:
+      labels:
+        app: discussion-service
+    spec:
+      containers:
+        - name: discussion-service
+          image: lightai39/rf-discussionservice:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: ASPNETCORE_HTTP_PORTS
+              value: "8080"
+            - name: ASPNETCORE_HTTPS_PORTS
+              value: "8081"
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: rabbitmq-url
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: discussion-db-url
+            - name: DB_NAME
+              value: rf-discussion
+            - name: DB_SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: discussion-db-password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: discussion-service-service
+spec:
+  selector:
+    app: discussion-service
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
