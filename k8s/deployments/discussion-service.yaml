@@ -18,7 +18,7 @@ spec:
         - name: discussion-service
           image: lightai39/rf-discussionservice:latest
           ports:
-            - containerPort: 8081
+            - containerPort: 8080
           env:
             - name: ASPNETCORE_HTTP_PORTS
               value: "8080"
@@ -65,5 +65,5 @@ spec:
     app: discussion-service
   ports:
     - protocol: TCP
-      port: 8081
-      targetPort: 8081
+      port: 8080
+      targetPort: 8080
