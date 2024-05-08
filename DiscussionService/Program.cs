@@ -25,8 +25,6 @@ var rabbitMqHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "ranki
 var rabbitMqPort = Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? "5672";
 
 var rabbitMqUri = new Uri($"amqp://{rabbitMqHost}:{rabbitMqPort}");
-Console.WriteLine(rabbitMqUri);
-
 
 builder.Services.AddMassTransit(BusFactoryConfigurator =>
 {
@@ -43,6 +41,8 @@ builder.Services.AddMassTransit(BusFactoryConfigurator =>
         configurator.ConfigureEndpoints(context);
     });
 });
+
+Console.WriteLine($"Connecting to RabbitMQ at {$"amqp://{rabbitMqHost}:{rabbitMqPort}"} ---------------------------------");
 
 var app = builder.Build();
 
