@@ -42,7 +42,7 @@ builder.Services.AddMassTransit(BusFactoryConfigurator =>
     });
 });
 
-Console.WriteLine($"Connecting to RabbitMQ at {$"amqp://{rabbitMqHost}:{rabbitMqPort}"} ---------------------------------");
+Console.WriteLine($"Connecting to RabbitMQ at {$"amqp://{rabbitMqHost}:{rabbitMqPort}"}");
 
 var app = builder.Build();
 
