@@ -10,7 +10,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "discussionservice",
-          "Port": 8080
+          "Port": 8081
         }
       ],
 

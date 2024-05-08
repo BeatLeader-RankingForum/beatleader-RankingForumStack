@@ -19,9 +19,21 @@ spec:
           image: lightai39/rf-apigateway:latest
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
           env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
             - name: ASPNETCORE_HTTP_PORTS
               value: "8080"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: ocelot-config
+            items:
+            - key: ocelot.json
+              path: ocelot.json
 
 ---
 apiVersion: v1
