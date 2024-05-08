@@ -32,6 +32,16 @@ spec:
                 configMapKeyRef:
                   name: rabbitmq-config
                   key: rabbitmq-port
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: rabbitmq-user
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: rabbitmq-pass
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
