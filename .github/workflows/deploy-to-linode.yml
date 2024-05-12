@@ -24,7 +24,10 @@ jobs:
         echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
 
     - name: Apply Kubernetes files
-      run: kubectl apply -f k8s/**/*.yaml
+      run: |
+        for file in k8s/**/*.yaml; do
+          kubectl apply -f "$file"
+        done
 
     - name: Verify deployment
       run: kubectl rollout status deployment/myapp-deployment  # Update this with your deployment
