@@ -20,6 +20,7 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       run: |
+        mkdir -p $HOME/.kube  # This ensures the .kube directory exists
         echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
 
     - name: Apply Kubernetes files
