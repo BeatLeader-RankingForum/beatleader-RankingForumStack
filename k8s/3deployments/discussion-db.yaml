@@ -19,6 +19,9 @@ spec:
           image: mcr.microsoft.com/mssql/server:2019-latest
           ports:
             - containerPort: 1433
+          volumeMounts:
+            - name: mssql-data
+              mountPath: /var/opt/mssql
           env:
             - name: ACCEPT_EULA
               value: "Y"
@@ -27,6 +30,10 @@ spec:
                 secretKeyRef:
                   name: db-secret
                   key: discussion-db-password
+      volumes:
+        - name: mssql-data
+          persistentVolumeClaim:
+            claimName: discussion-db-pvc
 
 ---
 apiVersion: v1

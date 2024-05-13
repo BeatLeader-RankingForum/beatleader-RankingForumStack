@@ -22,6 +22,9 @@ spec:
               containerPort: 15672
             - name: amqp
               containerPort: 5672
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
           env:
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
@@ -33,6 +36,10 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-secret
                   key: rabbitmq-pass
+      volumes:
+        - name: rabbitmq-data
+          persistentVolumeClaim:
+            claimName: rabbitmq-pvc
 
 ---
 apiVersion: v1
