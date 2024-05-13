@@ -41,7 +41,6 @@ spec:
       name: rabbitmq-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: linode-block-storage-retain
       resources:
         requests:
           storage: 20Gi
