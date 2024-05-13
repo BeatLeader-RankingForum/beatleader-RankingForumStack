@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: discussion-db-deployment
   labels:
@@ -14,6 +14,7 @@ spec:
       labels:
         app: discussion-db
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
         - name: discussion-db
           image: mcr.microsoft.com/mssql/server:2019-latest
@@ -30,10 +31,15 @@ spec:
                 secretKeyRef:
                   name: db-secret
                   key: discussion-db-password
-      volumes:
-        - name: mssql-data
-          persistentVolumeClaim:
-            claimName: discussion-db-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: mssql-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 30Gi
 
 ---
 apiVersion: v1
