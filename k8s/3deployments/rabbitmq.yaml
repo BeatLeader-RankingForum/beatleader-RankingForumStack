@@ -36,10 +36,14 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-secret
                   key: rabbitmq-pass
-      volumes:
-        - name: rabbitmq-data
-          persistentVolumeClaim:
-            claimName: rabbitmq-pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 20Gi
 
 ---
 apiVersion: v1
