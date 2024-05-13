@@ -17,6 +17,7 @@ spec:
       containers:
         - name: api-gateway
           image: lightai39/rf-apigateway:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           volumeMounts:
