@@ -17,6 +17,7 @@ spec:
       containers:
         - name: discussion-service
           image: lightai39/rf-discussionservice:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:

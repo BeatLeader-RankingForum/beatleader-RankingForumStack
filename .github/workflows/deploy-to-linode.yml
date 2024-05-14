@@ -1,0 +1,37 @@
+name: Deploy to Linode Kubernetes Service
+
+on:
+  workflow_run:
+    workflows: ["Docker Push"]  # Replace "Docker Push" with the name of your docker-push.yml workflow
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Kubectl
+      uses: azure/setup-kubectl@v1
+
+    - name: Load Kube Config
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      run: |
+        mkdir -p $HOME/.kube
+        echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
+
+    - name: Apply Kubernetes files
+      run: |
+        for file in k8s/**/*.yaml; do
+          kubectl apply -f "$file"
+        done
+
+    - name: Force Restart Deployments
+      run: |
+        kubectl rollout restart deployment -n default
+
+    - name: Verify deployment
+      run: kubectl get deployments -n default
