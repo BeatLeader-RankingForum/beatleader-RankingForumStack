@@ -1,7 +1,6 @@
 using DiscussionService;
 using DiscussionService.Logic;
 using MassTransit;
-using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,11 +25,11 @@ var rabbitMqPort = Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? "5672"
 
 var rabbitMqUri = new Uri($"amqp://{rabbitMqHost}:{rabbitMqPort}");
 
-builder.Services.AddMassTransit(BusFactoryConfigurator =>
+builder.Services.AddMassTransit(busFactoryConfigurator =>
 {
-    BusFactoryConfigurator.SetKebabCaseEndpointNameFormatter();
+    busFactoryConfigurator.SetKebabCaseEndpointNameFormatter();
 
-    BusFactoryConfigurator.UsingRabbitMq((context, configurator) =>
+    busFactoryConfigurator.UsingRabbitMq((context, configurator) =>
     {
         configurator.Host(rabbitMqUri, h =>
         {
@@ -42,7 +41,7 @@ builder.Services.AddMassTransit(BusFactoryConfigurator =>
     });
 });
 
-Console.WriteLine($"Connecting to RabbitMQ at {$"amqp://{rabbitMqHost}:{rabbitMqPort}"}");
+Console.WriteLine($"Connecting to RabbitMQ at amqp://{rabbitMqHost}:{rabbitMqPort}");
 
 var app = builder.Build();
 

@@ -63,8 +63,6 @@ namespace DiscussionService.Controllers
             }
 
             return mapDiscussion;
-
-
         }
 
         // PUT: api/MapDiscussions/5
