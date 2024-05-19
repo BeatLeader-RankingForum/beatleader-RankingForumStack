@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: rabbitmq-deployment
   labels:
@@ -22,6 +22,9 @@ spec:
               containerPort: 15672
             - name: amqp
               containerPort: 5672
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
           env:
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
@@ -33,6 +36,14 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-secret
                   key: rabbitmq-pass
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 20Gi
 
 ---
 apiVersion: v1

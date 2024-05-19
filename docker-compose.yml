@@ -19,6 +19,12 @@ services:
       - DB_HOST=discussion-db
       - DB_NAME=rf-discussion
       - DB_SA_PASSWORD=SuperStrong!
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "8003:8081"
+      - "8004:8080"
     networks:
       - backend-common
       - backend-discussion
@@ -46,6 +52,10 @@ services:
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
     networks:
       - backend-common
     ports:

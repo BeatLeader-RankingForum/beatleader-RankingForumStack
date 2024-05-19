@@ -1,7 +1,6 @@
 using DiscussionService;
 using DiscussionService.Logic;
 using MassTransit;
-using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,22 +20,28 @@ string dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD") ?? "Sup
 string connectionString = $"Data Source={dbHost}; Initial Catalog={dbName}; User ID=sa; Password={dbPassword}; Encrypt=true; TrustServerCertificate=true;";
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
+var rabbitMqHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "rankingforum-mq";
+var rabbitMqPort = Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? "5672";
 
-builder.Services.AddMassTransit(BusFactoryConfigurator =>
+var rabbitMqUri = new Uri($"amqp://{rabbitMqHost}:{rabbitMqPort}");
+
+builder.Services.AddMassTransit(busFactoryConfigurator =>
 {
-    BusFactoryConfigurator.SetKebabCaseEndpointNameFormatter();
+    busFactoryConfigurator.SetKebabCaseEndpointNameFormatter();
 
-    BusFactoryConfigurator.UsingRabbitMq((context, configurator) =>
+    busFactoryConfigurator.UsingRabbitMq((context, configurator) =>
     {
-        configurator.Host(new Uri($"amqp://{Environment.GetEnvironmentVariable("RABBITMQ_HOST")}:{Environment.GetEnvironmentVariable("RABBITMQ_PORT")}" ?? builder.Configuration["MessageBroker:Host"]!), h =>
+        configurator.Host(rabbitMqUri, h =>
         {
-            h.Username(builder.Configuration["MessageBroker:Username"] ?? "guest");
-            h.Password(builder.Configuration["MessageBroker:Password"] ?? "guest");
+            h.Username(Environment.GetEnvironmentVariable("RABBITMQ_USER") ?? builder.Configuration["MessageBroker:Username"] ?? "guest");
+            h.Password(Environment.GetEnvironmentVariable("RABBITMQ_PASS") ?? builder.Configuration["MessageBroker:Password"] ?? "guest");
         });
 
         configurator.ConfigureEndpoints(context);
     });
 });
+
+Console.WriteLine($"Connecting to RabbitMQ at amqp://{rabbitMqHost}:{rabbitMqPort}");
 
 var app = builder.Build();
 
@@ -47,9 +52,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 
