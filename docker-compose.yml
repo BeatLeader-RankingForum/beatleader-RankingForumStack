@@ -4,11 +4,12 @@ networks:
   backend-common:
 
   backend-discussion:
+    
+  backend-user:
 
 
 
 services:
-
   discussionservice:
     container_name: discussion-service
     image: ${DOCKER_REGISTRY-}discussionservice
@@ -19,6 +20,7 @@ services:
       - DB_HOST=discussion-db
       - DB_NAME=rf-discussion
       - DB_SA_PASSWORD=SuperStrong!
+      - RABBITMQ_HOST=rankingforum-mq
     networks:
       - backend-common
       - backend-discussion
@@ -38,7 +40,35 @@ services:
     volumes:
       - ././containers/discussionservice/db/discussiondb:/var/opt/mssql/data
 
+  userservice:
+    container_name: user-service
+    image: ${DOCKER_REGISTRY-}userservice
+    build:
+      context: .
+      dockerfile: UserService/Dockerfile
+    environment:
+      - DB_HOST=user-db
+      - DB_NAME=rf-user
+      - DB_SA_PASSWORD=SuperStrong!
+      - RABBITMQ_HOST=rankingforum-mq
+    networks:
+      - backend-common
+      - backend-user
+    volumes:
+      - ././containers/userservice/data/userservice:/app/data
 
+  user-db:
+    container_name: user-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SuperStrong!
+    networks:
+      - backend-discussion
+    ports:
+      - "39002:1433"
+    volumes:
+      - ././containers/userservice/db/userdb:/var/opt/mssql/data
 
   apigateway:
     container_name: api-gateway

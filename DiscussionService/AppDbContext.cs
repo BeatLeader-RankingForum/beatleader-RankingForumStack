@@ -32,8 +32,8 @@ namespace DiscussionService
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var productContext = services.GetRequiredService<AppDbContext>();
-                    productContext.Database.Migrate();
+                    var dbContext = services.GetRequiredService<AppDbContext>();
+                    dbContext.Database.Migrate();
                 }
                 catch (Exception ex)
                 {

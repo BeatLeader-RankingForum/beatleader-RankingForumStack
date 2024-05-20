@@ -1,8 +1,11 @@
-using DiscussionService;
-using DiscussionService.Logic;
 using MassTransit;
-using MassTransit.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using UserService;
+using UserService.Authentication;
+using UserService.Interfaces;
+using UserService.Logic;
+using UserService.OptionsSetup;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,14 +16,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<MapDiscussionLogic>();
+builder.Services.AddScoped<LoginLogic>();
 
 string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
-string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-discussion";
+string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-user";
 string dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD") ?? "SuperStrong!";
 string connectionString = $"Data Source={dbHost}; Initial Catalog={dbName}; User ID=sa; Password={dbPassword}; Encrypt=true; TrustServerCertificate=true;";
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
-
 
 builder.Services.AddMassTransit(busFactoryConfigurator =>
 {
@@ -38,6 +40,14 @@ builder.Services.AddMassTransit(busFactoryConfigurator =>
     });
 });
 
+builder.Services.ConfigureOptions<JwtOptionsSetup>();
+builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer();
+
+builder.Services.AddSingleton<IJwtProvider, JwtProvider>();
+
 var app = builder.Build();
 
 AppDbContext.ApplyMigrations(app);
@@ -49,7 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
