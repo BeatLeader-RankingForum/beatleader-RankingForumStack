@@ -25,7 +25,7 @@ public class LoginLogic
             return LogicResponse<string>.Fail("User not found", LogicResponseType.NotFound);
         }
         
-        // check auth with main server
+        // TODO: check auth with main server
         
         
         string token = _jwtProvider.GenerateJwtToken(user);
