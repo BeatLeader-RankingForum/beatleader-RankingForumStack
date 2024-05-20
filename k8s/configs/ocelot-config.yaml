@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ocelot-config
+data:
+  ocelot.json: |
+    {
+      "Routes": [
+        {
+          "UpstreamPathTemplate": "/api/MapDiscussions/{everything}",
+          "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
+          "DownstreamPathTemplate": "/api/MapDiscussions/{everything}",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "discussion-service-service",
+              "Port": 8080
+            }
+          ],
+          "DangerousAcceptAnyServerCertificateValidator": true
+        }
+      ],
+      "GlobalConfiguration": {
+        "BaseUrl": "http://api-gateway-service.default.svc.cluster.local"
+      }
+    }
