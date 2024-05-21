@@ -19,13 +19,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="add auth to swagger and some various fixes">
-      <change afterPath="$PROJECT_DIR$/UserService/0428C4AB67EF1859E69DDCB2E27F249B4ADE9724" afterDir="false" />
+    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="certificate bullshit">
+      <change afterPath="$PROJECT_DIR$/Contracts/Auth/Role.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UserService/Migrations/20240521184049_add roles.Designer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UserService/Migrations/20240521184049_add roles.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UserService/Migrations/20240521184347_add value comparer to roles.Designer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UserService/Migrations/20240521184347_add value comparer to roles.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UserService/OptionsSetup/AuthorizeOptionsSetup.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/Docker/docker-compose.generated.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/Docker/docker-compose.generated.override.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiscussionService/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/DiscussionService/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/Authentication/JwtProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Authentication/JwtProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Models/User.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.override.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/UserService.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/UserService.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -409,7 +418,7 @@
       <workItem from="1715698151362" duration="3478000" />
       <workItem from="1715701651386" duration="4883000" />
       <workItem from="1716139591039" duration="12554000" />
-      <workItem from="1716165378306" duration="9154000" />
+      <workItem from="1716165378306" duration="19374000" />
     </task>
     <task id="LOCAL-00001" summary="fix docker-compose.yml, set up for rider">
       <option name="closed" value="true" />
@@ -443,7 +452,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716168134615</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="certificate bullshit">
+      <option name="closed" value="true" />
+      <created>1716234981806</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1716234981807</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -472,26 +489,8 @@
     <MESSAGE value="rider files" />
     <MESSAGE value="add user service and authentication/authorization with jwt bearer" />
     <MESSAGE value="add auth to swagger and some various fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="add auth to swagger and some various fixes" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/UserService/Logic/LoginLogic.cs</url>
-          <line>19</line>
-          <properties documentPath="G:\DEV\repos\RankingForum\UserService\Logic\LoginLogic.cs" containingFunctionPresentation="Method 'HandleLoginAsync'">
-            <startOffsets>
-              <option value="507" />
-            </startOffsets>
-            <endOffsets>
-              <option value="508" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="certificate bullshit" />
+    <option name="LAST_COMMIT_MESSAGE" value="certificate bullshit" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

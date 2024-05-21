@@ -19,10 +19,12 @@ public class JwtProvider : IJwtProvider
 
     public string GenerateJwtToken(User user)
     {
-        var claims = new Claim[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id)
         };
+        
+        claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.ToString())));
         
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(

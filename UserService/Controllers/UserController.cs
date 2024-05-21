@@ -1,7 +1,9 @@
+using Contracts.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UserService.Authentication;
 using UserService.DTOs;
 using UserService.Logic;
 using UserService.Models;
@@ -21,7 +23,7 @@ namespace UserService.Controllers
             _dbContext = dbContext;
         }
         
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             LogicResponse<string> response = await _loginLogic.HandleLoginAsync(loginDto);
@@ -45,7 +47,7 @@ namespace UserService.Controllers
         }
         
         [Authorize]
-        [HttpGet("/user/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserById(string id)
         {
             User? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
@@ -56,6 +58,13 @@ namespace UserService.Controllers
             }
 
             return Ok(user);
-        } 
+        }
+
+        [Authorize(Roles = nameof(Role.User))]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            return await _dbContext.Users.ToListAsync();
+        }
     }
 }

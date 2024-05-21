@@ -1,4 +1,6 @@
+using Contracts.Auth;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using UserService.Models;
 
 namespace UserService;
@@ -13,7 +15,16 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<User>()
+            .Property(u => u.Roles)
+            .HasConversion(
+                v => string.Join(",", v.Select(r => (int)r)), // Convert to comma-separated string of ints
+                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(r => (Role)int.Parse(r)).ToList() // Convert back to list of enums
+            )
+            .Metadata.SetValueComparer(new ValueComparer<ICollection<Role>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList()));
     }
 
     internal static void ApplyMigrations(IHost app)
