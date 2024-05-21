@@ -45,6 +45,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddScoped<LoginLogic>();
+builder.Services.AddScoped<UserManagementLogic>();
 
 string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
 string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-user";
@@ -78,6 +79,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 builder.Services.AddSingleton<IJwtProvider, JwtProvider>();
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
