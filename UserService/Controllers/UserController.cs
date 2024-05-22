@@ -94,14 +94,28 @@ namespace UserService.Controllers
         }
         
         [Authorize(Roles = nameof(Role.Admin))]
-        [HttpPost("create/full")]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        [HttpPost("create/data")]
+        public async Task<ActionResult<User>> CreateUser(CreateUserDto user)
         {
-            throw new NotImplementedException();
-            _dbContext.Users.Add(user);
-            await _dbContext.SaveChangesAsync();
+            LogicResponse<User> response = await _userManagementLogic.CreateUserFromData(user);
 
-            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                default:
+                    throw new Exception($"Method CreateUserFromIdAsync at CreateUser(id) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+
+            return CreatedAtAction(nameof(GetUserById), new { id = response.Data!.Id }, response.Data);
         }
         
     }

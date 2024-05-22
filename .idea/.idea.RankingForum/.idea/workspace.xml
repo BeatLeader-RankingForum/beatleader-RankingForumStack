@@ -19,15 +19,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Contracts/Constants.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UserService/DTOs/CreateUserDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UserService/Logic/UserManagementLogic.cs" afterDir="false" />
+    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="add create logic for normal users">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/Docker/docker-compose.generated.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/Docker/docker-compose.generated.override.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserService/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Controllers/UserController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserService/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Models/User.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,12 +52,8 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/2d7eea252964e69be94cb9c847b371b23e4dd470/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/2d7eea252964e69be94cb9c847b371b23e4dd470/src/libraries/System.Private.Uri/src/System/UriExt.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/Microsoft.Extensions.DependencyInjection/src/ServiceProvider.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/DiscussionService/AppDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/DiscussionService/AppDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/DiscussionService/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/UserService/Logic/LoginLogic.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/UserService/OptionsSetup/JwtOptionsSetup.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/UserService/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://G:/DEV/repos/RankingForum/UserService/Migrations/AppDbContextModelSnapshot.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://G:/DEV/repos/RankingForum/UserService/Migrations/AppDbContextModelSnapshot.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -412,6 +401,7 @@
       <workItem from="1715701651386" duration="4883000" />
       <workItem from="1716139591039" duration="12554000" />
       <workItem from="1716165378306" duration="27203000" />
+      <workItem from="1716332671821" duration="2011000" />
     </task>
     <task id="LOCAL-00001" summary="fix docker-compose.yml, set up for rider">
       <option name="closed" value="true" />
@@ -461,7 +451,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716317886375</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add create logic for normal users">
+      <option name="closed" value="true" />
+      <created>1716333257461</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1716333257461</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -492,7 +490,8 @@
     <MESSAGE value="add auth to swagger and some various fixes" />
     <MESSAGE value="certificate bullshit" />
     <MESSAGE value="add roles to JWT and user" />
-    <option name="LAST_COMMIT_MESSAGE" value="add roles to JWT and user" />
+    <MESSAGE value="add create logic for normal users" />
+    <option name="LAST_COMMIT_MESSAGE" value="add create logic for normal users" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
