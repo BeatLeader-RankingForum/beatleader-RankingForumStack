@@ -117,6 +117,81 @@ namespace UserService.Controllers
 
             return CreatedAtAction(nameof(GetUserById), new { id = response.Data!.Id }, response.Data);
         }
-        
+
+        [Authorize(Roles = nameof(Role.Admin))]
+        [HttpPost("roles/add")]
+        public async Task<ActionResult<User>> AddUserRole(UpdateUserRoleDto data)
+        {
+            LogicResponse<User> response = await _userManagementLogic.AddUserRoleAsync(data);
+
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                default:
+                    throw new Exception($"Method AddUserRoleAsync at AddUserRole(data) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+
+            return Ok(response.Data);
+        }
+    
+        [Authorize(Roles = nameof(Role.Admin))]
+        [HttpPost("roles/remove")]
+        public async Task<ActionResult<User>> RemoveUserRole(UpdateUserRoleDto data)
+        {
+            LogicResponse<User> response = await _userManagementLogic.RemoveUserRoleAsync(data);
+
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                default:
+                    throw new Exception($"Method RemoveUserRoleAsync at RemoveUserRole(data) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+
+            return Ok(response.Data);
+        }
+
+        [Authorize(Roles = nameof(Role.Admin))]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<User>> DeleteUser(string id)
+        {
+            LogicResponse<User> response = await _userManagementLogic.DeleteUserAsync(id);
+
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                default:
+                    throw new Exception($"Method DeleteUserAsync at DeleteUser(data) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+
+            return Ok(response.Data);
+        }
+
     }
 }

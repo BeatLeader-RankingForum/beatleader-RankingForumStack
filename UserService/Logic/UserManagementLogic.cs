@@ -133,4 +133,57 @@ public class UserManagementLogic
 
         return LogicResponse<User>.Ok(newUser);
     }
+
+    public async Task<LogicResponse<User>> AddUserRoleAsync(UpdateUserRoleDto data)
+    {
+        var user = await _dbContext.Users.FindAsync(data.Id);
+        if (user == null)
+        {
+            return LogicResponse<User>.Fail("User not found", LogicResponseType.NotFound);
+        }
+
+        if (user.Roles.Any(x => x == data.Role))
+        {
+            return LogicResponse<User>.Fail("User already has this role", LogicResponseType.Conflict);
+        }
+
+        user.Roles.Add(data.Role);
+        await _dbContext.SaveChangesAsync();
+
+        return LogicResponse<User>.Ok(user);
+    }
+
+    public async Task<LogicResponse<User>> RemoveUserRoleAsync(UpdateUserRoleDto data)
+    {
+        var user = await _dbContext.Users.FindAsync(data.Id);
+        if (user == null)
+        {
+            return LogicResponse<User>.Fail("User not found", LogicResponseType.NotFound);
+        }
+
+        if (user.Roles.All(x => x != data.Role))
+        {
+            return LogicResponse<User>.Fail("User doesn't have this role", LogicResponseType.BadRequest);
+        }
+
+        user.Roles.Remove(data.Role);
+        await _dbContext.SaveChangesAsync();
+
+        return LogicResponse<User>.Ok(user);
+    }
+
+    public async Task<LogicResponse<User>> DeleteUserAsync(string id)
+    {
+        var user = await _dbContext.Users.FindAsync(id);
+        if (user == null)
+        {
+            return LogicResponse<User>.Fail("User not found", LogicResponseType.NotFound);
+        }
+
+        _dbContext.Users.Remove(user);
+        await _dbContext.SaveChangesAsync();
+
+        return LogicResponse<User>.Ok(user);
+    }
+    
 }
