@@ -23,8 +23,8 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "apigateway:dev"
     ports:
-    - "127.0.0.1:57000:57100"
-    - "127.0.0.1:57200:57300"
+    - "127.0.0.1:57003:57100"
+    - "127.0.0.1:57203:57300"
     volumes:
     - "C:\\Users\\Wessel van Hemert\\.nuget\\packages:/home/app/.nuget/packages"
     - "G:\\DEV\\repos\\RankingForum\\ApiGateway:/app:rw"
@@ -33,7 +33,7 @@ services:
       2024.1.2\\Linux64:/opt/rider-debugger"
     - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.1.2\\bin:/etc/opt/rider-debugger/backend-log.xml"
     - "C:\\Users\\Wessel van Hemert\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\\
-      DebuggerWorker\\JetBrains.Debugger.Worker.2024_5_22_01_06_05:/var/opt/rider-debugger:rw"
+      DebuggerWorker\\JetBrains.Debugger.Worker.2024_5_30_17_16_42:/var/opt/rider-debugger:rw"
     working_dir: "/app"
   discussionservice:
     build:
@@ -57,8 +57,8 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "discussionservice:dev"
     ports:
-    - "127.0.0.1:57001:57100"
-    - "127.0.0.1:57201:57300"
+    - "127.0.0.1:57004:57100"
+    - "127.0.0.1:57204:57300"
     volumes:
     - "C:\\Users\\Wessel van Hemert\\.nuget\\packages:/home/app/.nuget/packages"
     - "G:\\DEV\\repos\\RankingForum\\DiscussionService:/app:rw"
@@ -67,7 +67,7 @@ services:
       2024.1.2\\Linux64:/opt/rider-debugger"
     - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.1.2\\bin:/etc/opt/rider-debugger/backend-log.xml"
     - "C:\\Users\\Wessel van Hemert\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\\
-      DebuggerWorker\\JetBrains.Debugger.Worker.2024_5_22_01_06_05:/var/opt/rider-debugger:rw"
+      DebuggerWorker\\JetBrains.Debugger.Worker.2024_5_30_17_16_42:/var/opt/rider-debugger:rw"
     working_dir: "/app"
   userservice:
     build:
@@ -91,8 +91,8 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "userservice:dev"
     ports:
-    - "127.0.0.1:57002:57100"
-    - "127.0.0.1:57202:57300"
+    - "127.0.0.1:57005:57100"
+    - "127.0.0.1:57205:57300"
     volumes:
     - "C:\\Users\\Wessel van Hemert\\.nuget\\packages:/home/app/.nuget/packages"
     - "G:\\DEV\\repos\\RankingForum\\UserService:/app:rw"
@@ -101,5 +101,5 @@ services:
       2024.1.2\\Linux64:/opt/rider-debugger"
     - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.1.2\\bin:/etc/opt/rider-debugger/backend-log.xml"
     - "C:\\Users\\Wessel van Hemert\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\\
-      DebuggerWorker\\JetBrains.Debugger.Worker.2024_5_22_01_06_05:/var/opt/rider-debugger:rw"
+      DebuggerWorker\\JetBrains.Debugger.Worker.2024_5_30_17_16_42:/var/opt/rider-debugger:rw"
     working_dir: "/app"

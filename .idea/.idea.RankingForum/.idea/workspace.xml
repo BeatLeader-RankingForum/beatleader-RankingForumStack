@@ -19,11 +19,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="add admin method for creating user">
-      <change afterPath="$PROJECT_DIR$/UserService/DTOs/UpdateUserRoleDto.cs" afterDir="false" />
+    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="complete set of rest operations required for user">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserService/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Controllers/UserController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserService/Logic/UserManagementLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Logic/UserManagementLogic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/Docker/docker-compose.generated.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/Docker/docker-compose.generated.override.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/Logic/LoginLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Logic/LoginLogic.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -409,7 +408,7 @@
       <workItem from="1716139591039" duration="12554000" />
       <workItem from="1716165378306" duration="27203000" />
       <workItem from="1716332671821" duration="13335000" />
-      <workItem from="1716671007331" duration="3780000" />
+      <workItem from="1716671007331" duration="5837000" />
     </task>
     <task id="LOCAL-00001" summary="fix docker-compose.yml, set up for rider">
       <option name="closed" value="true" />
@@ -475,7 +474,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716336359661</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="complete set of rest operations required for user">
+      <option name="closed" value="true" />
+      <created>1717080738554</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1717080738554</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -508,7 +515,8 @@
     <MESSAGE value="add roles to JWT and user" />
     <MESSAGE value="add create logic for normal users" />
     <MESSAGE value="add admin method for creating user" />
-    <option name="LAST_COMMIT_MESSAGE" value="add admin method for creating user" />
+    <MESSAGE value="complete set of rest operations required for user" />
+    <option name="LAST_COMMIT_MESSAGE" value="complete set of rest operations required for user" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
