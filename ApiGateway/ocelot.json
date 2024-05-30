@@ -1,15 +1,31 @@
 {
   "Routes": [
-    // User Web API
+    // Discussion service
     {
-      "UpstreamPathTemplate": "/api/MapDiscussions/{everything}",
+      "UpstreamPathTemplate": "/MapDiscussions/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
-      "DownstreamPathTemplate": "/api/MapDiscussions/{everything}",
+      "DownstreamPathTemplate": "/MapDiscussions/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "discussionservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    // User service
+    {
+      "UpstreamPathTemplate": "/User/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/User/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "userservice",
           "Port": 8081
         }
       ],

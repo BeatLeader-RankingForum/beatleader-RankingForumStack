@@ -10,7 +10,7 @@ using UserService.Models;
 
 namespace UserService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -120,7 +120,7 @@ namespace UserService.Controllers
 
         [Authorize(Roles = nameof(Role.Admin))]
         [HttpPost("roles/add")]
-        public async Task<ActionResult<User>> AddUserRole(UpdateUserRoleDto data)
+        public async Task<ActionResult<User>> AddRole(UpdateUserRoleDto data)
         {
             LogicResponse<User> response = await _userManagementLogic.AddUserRoleAsync(data);
 
@@ -137,7 +137,7 @@ namespace UserService.Controllers
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
                 default:
-                    throw new Exception($"Method AddUserRoleAsync at AddUserRole(data) returned an unexpected response type. Message: {response.ErrorMessage}");
+                    throw new Exception($"Method AddUserRoleAsync at AddRole(data) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
 
             return Ok(response.Data);
@@ -145,7 +145,7 @@ namespace UserService.Controllers
     
         [Authorize(Roles = nameof(Role.Admin))]
         [HttpPost("roles/remove")]
-        public async Task<ActionResult<User>> RemoveUserRole(UpdateUserRoleDto data)
+        public async Task<ActionResult<User>> RemoveRole(UpdateUserRoleDto data)
         {
             LogicResponse<User> response = await _userManagementLogic.RemoveUserRoleAsync(data);
 
@@ -162,7 +162,7 @@ namespace UserService.Controllers
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
                 default:
-                    throw new Exception($"Method RemoveUserRoleAsync at RemoveUserRole(data) returned an unexpected response type. Message: {response.ErrorMessage}");
+                    throw new Exception($"Method RemoveUserRoleAsync at RemoveRole(data) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
 
             return Ok(response.Data);

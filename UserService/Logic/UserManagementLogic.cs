@@ -3,7 +3,6 @@ using Contracts.Auth;
 using UserService.DTOs;
 using UserService.Models;
 using Contracts;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace UserService.Logic;

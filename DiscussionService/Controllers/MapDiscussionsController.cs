@@ -14,7 +14,7 @@ using DiscussionService.Logic;
 
 namespace DiscussionService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MapDiscussionsController : ControllerBase
     {

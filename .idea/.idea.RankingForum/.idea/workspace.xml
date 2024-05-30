@@ -19,10 +19,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="complete set of rest operations required for user">
+    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="inject httpclientfactory instead of httpclient">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/Docker/docker-compose.generated.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/Docker/docker-compose.generated.override.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserService/Logic/LoginLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Logic/LoginLogic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/Logic/UserManagementLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/Logic/UserManagementLogic.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,9 +54,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/2d7eea252964e69be94cb9c847b371b23e4dd470/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/2d7eea252964e69be94cb9c847b371b23e4dd470/src/libraries/System.Private.Uri/src/System/UriExt.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/Microsoft.Extensions.DependencyInjection/src/ServiceProvider.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/UserService/Logic/UserManagementLogic.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/UserService/Migrations/AppDbContextModelSnapshot.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/DEV/repos/RankingForum/UserService/Migrations/AppDbContextModelSnapshot.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://G:/DEV/repos/RankingForum/UserService/Logic/LoginLogic.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -408,7 +406,7 @@
       <workItem from="1716139591039" duration="12554000" />
       <workItem from="1716165378306" duration="27203000" />
       <workItem from="1716332671821" duration="13335000" />
-      <workItem from="1716671007331" duration="5837000" />
+      <workItem from="1716671007331" duration="8219000" />
     </task>
     <task id="LOCAL-00001" summary="fix docker-compose.yml, set up for rider">
       <option name="closed" value="true" />
@@ -482,7 +480,23 @@
       <option name="project" value="LOCAL" />
       <updated>1717080738554</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="added main server auth check">
+      <option name="closed" value="true" />
+      <created>1717082560023</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1717082560023</updated>
+    </task>
+    <task id="LOCAL-00011" summary="inject httpclientfactory instead of httpclient">
+      <option name="closed" value="true" />
+      <created>1717082634768</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1717082634768</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -516,7 +530,9 @@
     <MESSAGE value="add create logic for normal users" />
     <MESSAGE value="add admin method for creating user" />
     <MESSAGE value="complete set of rest operations required for user" />
-    <option name="LAST_COMMIT_MESSAGE" value="complete set of rest operations required for user" />
+    <MESSAGE value="added main server auth check" />
+    <MESSAGE value="inject httpclientfactory instead of httpclient" />
+    <option name="LAST_COMMIT_MESSAGE" value="inject httpclientfactory instead of httpclient" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

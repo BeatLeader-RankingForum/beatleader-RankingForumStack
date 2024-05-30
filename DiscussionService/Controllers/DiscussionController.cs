@@ -4,7 +4,7 @@
 
 namespace DiscussionService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class DiscussionController : ControllerBase
     {
