@@ -11,15 +11,15 @@ namespace UserService.Logic;
 public class UserManagementLogic
 {
     private readonly AppDbContext _dbContext;
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<UserManagementLogic> _logger;
     
 
-    public UserManagementLogic(AppDbContext dbContext, HttpClient httpClient, ILogger<UserManagementLogic> logger)
+    public UserManagementLogic(AppDbContext dbContext, ILogger<UserManagementLogic> logger, IHttpClientFactory httpClientFactory)
     {
         _dbContext = dbContext;
-        _httpClient = httpClient;
         _logger = logger;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<LogicResponse<User>> CreateUserFromIdAsync(string id)
@@ -35,8 +35,10 @@ public class UserManagementLogic
         // Check main server for existence of player
         try
         {
+            var httpClient = _httpClientFactory.CreateClient();
+            
             var response =
-                await _httpClient.GetAsync($"{Constants.blMainServerUrl}player/{id}?stats=false&keepOriginalId=false");
+                await httpClient.GetAsync($"{Constants.blMainServerUrl}player/{id}?stats=false&keepOriginalId=false");
             response.EnsureSuccessStatusCode();
 
             var responseData = await response.Content.ReadAsStringAsync();
@@ -91,8 +93,10 @@ public class UserManagementLogic
         // Check main server for existence of player
         try
         {
+            var httpClient = _httpClientFactory.CreateClient();
+            
             var response =
-                await _httpClient.GetAsync($"{Constants.blMainServerUrl}player/{user.Id}?stats=false&keepOriginalId=false");
+                await httpClient.GetAsync($"{Constants.blMainServerUrl}player/{user.Id}?stats=false&keepOriginalId=false");
             response.EnsureSuccessStatusCode();
 
             var responseData = await response.Content.ReadAsStringAsync();
