@@ -1,9 +1,9 @@
+﻿using Contracts.Auth.Setup;
 using Microsoft.Extensions.Options;
-using UserService.Authentication;
 
-namespace UserService.OptionsSetup;
+namespace Contracts.Auth.OptionsSetup;
 
-public class JwtOptionsSetup : IConfigureOptions<JwtOptions>
+public class JwtOptionsSetup : IConfigureNamedOptions<JwtOptions>
 {
     public void Configure(JwtOptions options)
     {
@@ -17,4 +17,6 @@ public class JwtOptionsSetup : IConfigureOptions<JwtOptions>
             throw new ArgumentException("The JWT secret key must be at least 32 characters long.");
         }
     }
+
+    public void Configure(string? name, JwtOptions options) => Configure(options);
 }

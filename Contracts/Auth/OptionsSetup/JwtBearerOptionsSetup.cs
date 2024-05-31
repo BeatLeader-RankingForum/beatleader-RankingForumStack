@@ -1,11 +1,11 @@
-using System.Text;
+﻿using System.Text;
+using Contracts.Auth.Setup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using UserService.Authentication;
 
-namespace UserService.OptionsSetup;
+namespace Contracts.Auth.OptionsSetup;
 
 public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {

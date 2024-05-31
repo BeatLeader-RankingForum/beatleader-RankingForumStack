@@ -1,13 +1,10 @@
+using CommentService;
 using Contracts.Auth.OptionsSetup;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.OpenApi.Models;
-using UserService;
-using UserService.Authentication;
-using UserService.Interfaces;
-using UserService.Logic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new() { Title = "UserService", Version = "v1" });
+    options.SwaggerDoc("v1", new() { Title = "CommentService", Version = "v1" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
@@ -45,11 +42,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddScoped<LoginLogic>();
-builder.Services.AddScoped<UserManagementLogic>();
-
 string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
-string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-user";
+string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-comment";
 string dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD") ?? "SuperStrong!";
 string connectionString = $"Data Source={dbHost}; Initial Catalog={dbName}; User ID=sa; Password={dbPassword}; Encrypt=true; TrustServerCertificate=true;";
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
@@ -79,10 +73,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddScoped<IJwtProvider, JwtProvider>();
-
-builder.Services.AddHttpClient();
-
 var app = builder.Build();
 
 AppDbContext.ApplyMigrations(app);
@@ -101,6 +91,8 @@ if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("JWT_SE
 }
 
 JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 

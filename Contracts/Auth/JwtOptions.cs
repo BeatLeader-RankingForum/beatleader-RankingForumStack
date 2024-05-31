@@ -1,4 +1,4 @@
-namespace UserService.Authentication;
+﻿namespace Contracts.Auth.Setup;
 
 public class JwtOptions
 {

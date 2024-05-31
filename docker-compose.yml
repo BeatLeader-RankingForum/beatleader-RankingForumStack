@@ -6,7 +6,8 @@ networks:
   backend-discussion:
     
   backend-user:
-
+  
+  backend-comment:
 
 
 services:
@@ -76,6 +77,40 @@ services:
       - "39002:1433"
     volumes:
       - ././containers/userservice/db/userdb:/var/opt/mssql/data
+        
+  commentservice:
+    container_name: comment-service
+    image: ${DOCKER_REGISTRY-}commentservice
+    build:
+      context: .
+      dockerfile: CommentService/Dockerfile
+    environment:
+      - DB_HOST=comment-db
+      - DB_NAME=rf-comment
+      - DB_SA_PASSWORD=SuperStrong!
+      - RABBITMQ_HOST=rankingforum-mq
+      - JWT_SECRET_KEY=DevelopmentSecretKey543523465463
+    networks:
+      - backend-common
+      - backend-comment
+    ports:
+      - "8007:8080"
+      - "8008:8081"
+    volumes:
+      - ././containers/commentservice/data/commentservice:/app/data
+
+  comment-db:
+    container_name: comment-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SuperStrong!
+    networks:
+      - backend-comment
+    ports:
+      - "39003:1433"
+    volumes:
+      - ././containers/commentservice/db/commentdb:/var/opt/mssql/data
 
   apigateway:
     container_name: api-gateway

@@ -1,8 +1,7 @@
-﻿using Contracts.Auth;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace UserService.OptionsSetup;
+namespace Contracts.Auth.OptionsSetup;
 
 public class AuthorizeOptionsSetup : IConfigureNamedOptions<AuthorizationOptions>
 {
