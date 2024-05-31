@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using UserService.Authentication;
 using UserService.DTOs;
 using UserService.Logic;
@@ -77,12 +78,14 @@ namespace UserService.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(TokensDto tokens)
         {
-            if (User.Identity!.Name is null)
+            string? userId = User.Identity?.Name;
+            
+            if (userId is null)
             {
                 return BadRequest();
             }
             
-            LogicResponse<bool> response = await _loginLogic.LogoutAsync(User.Identity.Name, tokens.RefreshToken);
+            LogicResponse<bool> response = await _loginLogic.LogoutAsync(userId, tokens.RefreshToken);
             
             switch (response.Type)
             {
@@ -107,7 +110,7 @@ namespace UserService.Controllers
         [HttpGet]
         public async Task<ActionResult<User>> GetMe()
         {
-            if (User.Identity!.Name is null)
+            if (User.Identity?.Name is null)
             {
                 return NotFound();
             }
@@ -134,13 +137,6 @@ namespace UserService.Controllers
             }
 
             return Ok(user);
-        }
-
-        [Authorize(Roles = nameof(Role.User))]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
-        {
-            return await _dbContext.Users.ToListAsync();
         }
         
         [HttpPost("create/{id}")]

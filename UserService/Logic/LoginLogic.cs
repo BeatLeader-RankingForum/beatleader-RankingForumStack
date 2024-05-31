@@ -91,7 +91,7 @@ public class LoginLogic
         try
         {
             var principal = _jwtProvider.GetPrincipalFromExpiredToken(jwtToken);
-            userId = principal.Identity!.Name!;
+            userId = principal.Identity?.Name!;
         }
         catch (SecurityTokenException e)
         {

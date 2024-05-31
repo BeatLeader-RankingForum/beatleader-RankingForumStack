@@ -1,6 +1,7 @@
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.OpenApi.Models;
 using UserService;
 using UserService.Authentication;
@@ -98,6 +99,8 @@ if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("JWT_SE
     Console.WriteLine("The application will be terminated due to an insecure JWT_SECRET_KEY.");
     Environment.FailFast("The application has been terminated due to an insecure JWT_SECRET_KEY.");
 }
+
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 app.UseAuthentication();
 
