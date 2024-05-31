@@ -19,7 +19,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="remove api/ from path" />
+    <list default="true" id="c9ef34a8-b4a4-46e1-8bbe-910abc225aeb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RankingForum/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -90,7 +92,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.General",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -404,7 +406,7 @@
       <workItem from="1716139591039" duration="12554000" />
       <workItem from="1716165378306" duration="27203000" />
       <workItem from="1716332671821" duration="13335000" />
-      <workItem from="1716671007331" duration="8820000" />
+      <workItem from="1716671007331" duration="12346000" />
     </task>
     <task id="LOCAL-00001" summary="fix docker-compose.yml, set up for rider">
       <option name="closed" value="true" />
@@ -502,7 +504,23 @@
       <option name="project" value="LOCAL" />
       <updated>1717091946043</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="update gitignore&#10;oops">
+      <option name="closed" value="true" />
+      <created>1717092387789</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1717092387789</updated>
+    </task>
+    <task id="LOCAL-00014" summary="update gitignore&#10;oops">
+      <option name="closed" value="true" />
+      <created>1717092483714</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1717092483714</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -539,7 +557,8 @@
     <MESSAGE value="added main server auth check" />
     <MESSAGE value="inject httpclientfactory instead of httpclient" />
     <MESSAGE value="remove api/ from path" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove api/ from path" />
+    <MESSAGE value="update gitignore&#10;oops" />
+    <option name="LAST_COMMIT_MESSAGE" value="update gitignore&#10;oops" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -78,7 +78,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddSingleton<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
 builder.Services.AddHttpClient();
 

@@ -26,28 +26,102 @@ namespace UserService.Controllers
         }
         
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<ActionResult<TokensDto>> Login(LoginDto loginDto)
         {
-            LogicResponse<string> response = await _loginLogic.HandleLoginAsync(loginDto);
+            LogicResponse<TokensDto> response = await _loginLogic.HandleLoginAsync(loginDto);
 
-            if (response.Type == LogicResponseType.NotFound)
+            switch (response.Type)
             {
-                return NotFound(response.ErrorMessage);
-            }
-
-            if (response.Type == LogicResponseType.Unauthorized)
-            {
-                return Unauthorized(response.ErrorMessage);
-            }
-
-            if (response.Type == LogicResponseType.BadRequest)
-            {
-                return BadRequest(response.ErrorMessage);
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                default:
+                    throw new Exception($"Method HandleLoginAsync at Login(loginDto) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
 
             return Ok(response.Data);
         }
         
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh(TokensDto tokens)
+        {
+            LogicResponse<TokensDto> response = await _loginLogic.RefreshTokensAsync(tokens);
+            
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                default:
+                    throw new Exception($"Method RefreshTokensAsync at Refresh(tokens) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+            
+            return Ok(response.Data);
+        }
+        
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout(TokensDto tokens)
+        {
+            if (User.Identity!.Name is null)
+            {
+                return BadRequest();
+            }
+            
+            LogicResponse<bool> response = await _loginLogic.LogoutAsync(User.Identity.Name, tokens.RefreshToken);
+            
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                default:
+                    throw new Exception($"Method LogoutAsync at Logout(tokens) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+            
+            return Ok();
+        }
+        
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<User>> GetMe()
+        {
+            if (User.Identity!.Name is null)
+            {
+                return NotFound();
+            }
+            
+            User? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == User.Identity.Name);
+
+            if (user is null)
+            {
+                return NotFound();
+            }
+            
+            return Ok(user);
+        }
+
         [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserById(string id)
