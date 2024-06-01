@@ -26,6 +26,12 @@ public class CommentDbContext : DbContext
             .HasMany(c => c.Replies)
             .WithOne()
             .HasForeignKey(r => r.CommentId);
+        
+        modelBuilder.Entity<Review>()
+            .Property(r => r.CommentIds)
+            .HasConversion(
+                v => string.Join(';', v),
+                v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList());
     }
 
     internal static void ApplyMigrations(IHost app)
