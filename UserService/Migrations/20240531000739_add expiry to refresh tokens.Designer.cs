@@ -11,7 +11,7 @@ using UserService;
 
 namespace UserService.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(UserDbContext))]
     [Migration("20240531000739_add expiry to refresh tokens")]
     partial class addexpirytorefreshtokens
     {

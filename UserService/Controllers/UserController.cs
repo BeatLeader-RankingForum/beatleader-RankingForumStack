@@ -16,10 +16,10 @@ namespace UserService.Controllers
     public class UserController : ControllerBase
     {
         private readonly LoginLogic _loginLogic;
-        private readonly AppDbContext _dbContext;
+        private readonly UserDbContext _dbContext;
         private readonly UserManagementLogic _userManagementLogic;
 
-        public UserController(LoginLogic loginLogic, AppDbContext dbContext, UserManagementLogic userManagementLogic)
+        public UserController(LoginLogic loginLogic, UserDbContext dbContext, UserManagementLogic userManagementLogic)
         {
             _loginLogic = loginLogic;
             _dbContext = dbContext;

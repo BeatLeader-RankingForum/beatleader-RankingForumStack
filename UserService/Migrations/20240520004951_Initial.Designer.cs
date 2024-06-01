@@ -10,7 +10,7 @@ using UserService;
 
 namespace UserService.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(UserDbContext))]
     [Migration("20240520004951_Initial")]
     partial class Initial
     {

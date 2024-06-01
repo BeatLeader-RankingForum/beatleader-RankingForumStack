@@ -5,9 +5,9 @@ using UserService.Models;
 
 namespace UserService;
 
-public class AppDbContext : DbContext
+public class UserDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
     {
     }
 
@@ -35,7 +35,7 @@ public class AppDbContext : DbContext
             var services = scope.ServiceProvider;
             try
             {
-                var dbContext = services.GetRequiredService<AppDbContext>();
+                var dbContext = services.GetRequiredService<UserDbContext>();
                 dbContext.Database.Migrate();
             }
             catch (Exception ex)

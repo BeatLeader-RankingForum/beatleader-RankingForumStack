@@ -9,12 +9,12 @@ namespace UserService.Logic;
 
 public class UserManagementLogic
 {
-    private readonly AppDbContext _dbContext;
+    private readonly UserDbContext _dbContext;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<UserManagementLogic> _logger;
     
 
-    public UserManagementLogic(AppDbContext dbContext, ILogger<UserManagementLogic> logger, IHttpClientFactory httpClientFactory)
+    public UserManagementLogic(UserDbContext dbContext, ILogger<UserManagementLogic> logger, IHttpClientFactory httpClientFactory)
     {
         _dbContext = dbContext;
         _logger = logger;

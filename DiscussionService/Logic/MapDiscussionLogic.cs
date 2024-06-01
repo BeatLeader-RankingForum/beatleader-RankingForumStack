@@ -8,10 +8,10 @@ namespace DiscussionService.Logic
 {
     public class MapDiscussionLogic
     {
-        private readonly AppDbContext _context;
+        private readonly DiscussionDbContext _context;
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public MapDiscussionLogic(AppDbContext context, IPublishEndpoint publishEndpoint)
+        public MapDiscussionLogic(DiscussionDbContext context, IPublishEndpoint publishEndpoint)
         {
             _context = context;
             _publishEndpoint = publishEndpoint;
@@ -24,12 +24,11 @@ namespace DiscussionService.Logic
                 return LogicResponse<MapDiscussion>.Fail($"An entry already exists for {mapDiscussionDto.MapsetId}", LogicResponseType.Conflict);
             }
 
-            List<Discussion> discussions = new();
+            List<DifficultyDiscussion> discussions = new();
             // TODO: logic to determine which discussions to create
 
-            discussions.Add(new Discussion() // placeholder
+            discussions.Add(new DifficultyDiscussion() // placeholder
             {
-                Phase = PhaseEnum.Phase1,
                 Characteristic = 1,
                 Difficulty = 1
             });

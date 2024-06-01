@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DiscussionService
 {
-    public class AppDbContext : DbContext
+    public class DiscussionDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public DiscussionDbContext(DbContextOptions<DiscussionDbContext> options) : base(options)
         {
         }
 
         public DbSet<MapDiscussion> MapDiscussions { get; set; }
-        public DbSet<Discussion> Discussions { get; set; }
+        public DbSet<DifficultyDiscussion> Discussions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,8 +20,8 @@ namespace DiscussionService
                 .HasIndex(d => d.MapsetId)
                 .IsUnique();
 
-            modelBuilder.Entity<Discussion>()
-                .HasIndex(d => new { d.MapDiscussionId, d.Phase })
+            modelBuilder.Entity<DifficultyDiscussion>()
+                .HasIndex(d => new { d.MapDiscussionId, d.Characteristic, d.Difficulty })
                 .IsUnique();
         }
 
@@ -32,7 +32,7 @@ namespace DiscussionService
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var dbContext = services.GetRequiredService<AppDbContext>();
+                    var dbContext = services.GetRequiredService<DiscussionDbContext>();
                     dbContext.Database.Migrate();
                 }
                 catch (Exception ex)

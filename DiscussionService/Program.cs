@@ -19,7 +19,7 @@ string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
 string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-discussion";
 string dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD") ?? "SuperStrong!";
 string connectionString = $"Data Source={dbHost}; Initial Catalog={dbName}; User ID=sa; Password={dbPassword}; Encrypt=true; TrustServerCertificate=true;";
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<DiscussionDbContext>(options => options.UseSqlServer(connectionString));
 
 
 builder.Services.AddMassTransit(busFactoryConfigurator =>
@@ -40,7 +40,7 @@ builder.Services.AddMassTransit(busFactoryConfigurator =>
 
 var app = builder.Build();
 
-AppDbContext.ApplyMigrations(app);
+DiscussionDbContext.ApplyMigrations(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

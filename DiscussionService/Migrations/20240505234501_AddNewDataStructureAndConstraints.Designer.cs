@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiscussionService.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(DiscussionDbContext))]
     [Migration("20240505234501_AddNewDataStructureAndConstraints")]
     partial class AddNewDataStructureAndConstraints
     {

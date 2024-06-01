@@ -11,11 +11,11 @@ namespace UserService.Logic;
 
 public class LoginLogic
 {
-    private readonly AppDbContext _dbContext;
+    private readonly UserDbContext _dbContext;
     private readonly IJwtProvider _jwtProvider;
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public LoginLogic(AppDbContext dbContext, IJwtProvider jwtProvider, IHttpClientFactory httpClientFactory)
+    public LoginLogic(UserDbContext dbContext, IJwtProvider jwtProvider, IHttpClientFactory httpClientFactory)
     {
         _dbContext = dbContext;
         _jwtProvider = jwtProvider;

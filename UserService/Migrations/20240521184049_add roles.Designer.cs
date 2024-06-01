@@ -10,7 +10,7 @@ using UserService;
 
 namespace UserService.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(UserDbContext))]
     [Migration("20240521184049_add roles")]
     partial class addroles
     {

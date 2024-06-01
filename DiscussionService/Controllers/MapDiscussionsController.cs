@@ -19,11 +19,11 @@ namespace DiscussionService.Controllers
     public class MapDiscussionsController : ControllerBase
     {
         private readonly ILogger<MapDiscussionsController> _logger;
-        private readonly AppDbContext _context;
+        private readonly DiscussionDbContext _context;
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly MapDiscussionLogic _mapDiscussionLogic;
 
-        public MapDiscussionsController(ILogger<MapDiscussionsController> logger, AppDbContext context, IPublishEndpoint publishEndpoint, MapDiscussionLogic mapDiscussionLogic)
+        public MapDiscussionsController(ILogger<MapDiscussionsController> logger, DiscussionDbContext context, IPublishEndpoint publishEndpoint, MapDiscussionLogic mapDiscussionLogic)
         {
             _logger = logger;
             _context = context;

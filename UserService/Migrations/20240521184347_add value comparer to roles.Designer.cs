@@ -10,7 +10,7 @@ using UserService;
 
 namespace UserService.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(UserDbContext))]
     [Migration("20240521184347_add value comparer to roles")]
     partial class addvaluecomparertoroles
     {

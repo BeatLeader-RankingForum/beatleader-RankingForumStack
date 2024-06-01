@@ -14,10 +14,10 @@ namespace UserService.Authentication;
 public class JwtProvider : IJwtProvider
 {
     private readonly JwtOptions _jwtOptions;
-    private readonly AppDbContext _dbContext;
+    private readonly UserDbContext _dbContext;
     private readonly JwtBearerOptions _jwtBearerOptions;
 
-    public JwtProvider(IOptions<JwtOptions> options, AppDbContext dbContext, IOptions<JwtBearerOptions> jwtBearerOptions)
+    public JwtProvider(IOptions<JwtOptions> options, UserDbContext dbContext, IOptions<JwtBearerOptions> jwtBearerOptions)
     {
         _dbContext = dbContext;
         _jwtBearerOptions = jwtBearerOptions.Value;
