@@ -19,7 +19,7 @@ public class CommentLogic
     public async Task<LogicResponse<Comment>> GetCommentByIdAsync(string id)
     {
         Comment? comment = await _dbContext.Comments
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .Include(c => c.Replies).FirstOrDefaultAsync(c => c.Id == id);
         
         if (comment is null)
         {
@@ -99,7 +99,7 @@ public class CommentLogic
 
         if (comment is null || comment.IsDeleted)
         {
-            return LogicResponse<bool>.Fail($"Comment with id {id} not found", LogicResponseType.NotFound);
+            return LogicResponse<bool>.Fail($"Comment with id {id} not found or already marked as deleted", LogicResponseType.NotFound);
         }
         
         if (comment.AuthorId != userId && !isModerator)

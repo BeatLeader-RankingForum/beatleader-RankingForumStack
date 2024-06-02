@@ -16,7 +16,7 @@ public class ReplyLogic
 
     public async Task<LogicResponse<List<Reply>>> GetAllRepliesToCommentAsync(string commentId)
     {
-        if (await _dbContext.Comments
+        if (!await _dbContext.Comments
                 .AnyAsync(c => c.Id == commentId))
         {
             return LogicResponse<List<Reply>>.Fail("Comment not found", LogicResponseType.NotFound);
@@ -41,7 +41,7 @@ public class ReplyLogic
 
     public async Task<LogicResponse<Reply>> AddReplyAsync(AddReplyDto reply, string userId)
     {
-        if (await _dbContext.Comments
+        if (!await _dbContext.Comments
                 .AnyAsync(c => c.Id == reply.CommentId && !c.IsDeleted))
         {
             return LogicResponse<Reply>.Fail("Comment of reply not found or deleted", LogicResponseType.BadRequest);
@@ -119,6 +119,5 @@ public class ReplyLogic
         await _dbContext.SaveChangesAsync();
         
         return LogicResponse<bool>.Ok(true);
-        
     }
 }

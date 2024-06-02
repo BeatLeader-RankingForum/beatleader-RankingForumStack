@@ -31,7 +31,7 @@ public class CommentDbContext : DbContext
         modelBuilder.Entity<Review>()
             .HasMany(c => c.Replies)
             .WithOne()
-            .HasForeignKey(r => r.CommentId);
+            .HasForeignKey(r => r.ReviewId);
 
         modelBuilder.Entity<Review>()
             .Property(r => r.CommentIds)

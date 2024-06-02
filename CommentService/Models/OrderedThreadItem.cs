@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CommentService.Models;
 
@@ -10,7 +11,11 @@ public class OrderedThreadItem
     public string Id { get; set; }
     public required string AuthorId { get; set; }
     [ForeignKey(nameof(Comment))]
-    public required string CommentId { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? CommentId { get; set; } // used when its a reply to a comment
+    [ForeignKey(nameof(Review))]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ReviewId { get; set; } // used when its a reply to a review
     
     public bool IsEdited { get; set; } = false;
     public bool IsDeleted { get; set; } = false;

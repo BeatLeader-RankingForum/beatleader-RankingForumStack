@@ -5,9 +5,11 @@ using System.Text;
 using Contracts.Auth.Setup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using UserService.Interfaces;
 using UserService.Models;
+using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 
 namespace UserService.Authentication;
 
@@ -81,16 +83,23 @@ public class JwtProvider : IJwtProvider
         var tokenValidationParameters = _jwtBearerOptions.TokenValidationParameters.Clone();
         tokenValidationParameters.ValidateLifetime = false; // Allow expired tokens
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        SecurityToken securityToken;
-        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-        var jwtSecurityToken = securityToken as JwtSecurityToken;
-
-        if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        var tokenHandler = new JsonWebTokenHandler();
+        tokenHandler.InboundClaimTypeMap.Clear();
+        
+        var result = tokenHandler.ValidateTokenAsync(token, tokenValidationParameters).Result;
+    
+        if (!result.IsValid)
         {
             throw new SecurityTokenException("Invalid token");
         }
 
-        return principal;
+        var jwtSecurityToken = result.SecurityToken as JsonWebToken;
+    
+        if (jwtSecurityToken == null || !jwtSecurityToken.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new SecurityTokenException("Invalid token");
+        }
+        
+        return new ClaimsPrincipal(result.ClaimsIdentity);
     }
 }
