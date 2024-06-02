@@ -23,12 +23,11 @@ public class Comment
     public bool IsEdited { get; set; }
     public bool IsDeleted { get; set; }
 
-    public List<OrderedThreadItem> Replies { get; set; } = new();
+    public List<Reply> Replies { get; set; } = new();
+    public List<StatusUpdate> Events { get; set; } = new();
     
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     public DateTime? EditedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }
     public DateTime? DeletedAt { get; set; }
-
-
 }

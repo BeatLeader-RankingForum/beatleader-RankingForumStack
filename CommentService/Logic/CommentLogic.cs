@@ -19,7 +19,9 @@ public class CommentLogic
     public async Task<LogicResponse<Comment>> GetCommentByIdAsync(string id)
     {
         Comment? comment = await _dbContext.Comments
-            .Include(c => c.Replies).FirstOrDefaultAsync(c => c.Id == id);
+            .Include(c => c.Replies)
+            .Include(c => c.Events)
+            .FirstOrDefaultAsync(c => c.Id == id);
         
         if (comment is null)
         {
@@ -39,6 +41,8 @@ public class CommentLogic
         {
             return LogicResponse<Comment>.Fail("Duplicate comment", LogicResponseType.Conflict);
         }
+        
+        // TODO: stop comments with a beat number but no diffdiscussionid from being posted as such
         
         Comment comment = new()
         {
@@ -158,9 +162,9 @@ public class CommentLogic
             return LogicResponse<bool>.Fail("Cannot resolve comment with no replies", LogicResponseType.Forbidden);
         }
 
-        OrderedThreadItem resolvedEntry = CreateResolvedEntry(comment.Id, userId);
+        StatusUpdate resolvedEntry = CreateResolvedEntry(comment.Id, userId);
         
-        comment.Replies.Add(resolvedEntry);
+        comment.Events.Add(resolvedEntry);
         comment.ResolvedAt = DateTime.UtcNow;
         comment.IsResolved = true;
         _dbContext.Comments.Update(comment);
@@ -168,7 +172,7 @@ public class CommentLogic
         return LogicResponse<bool>.Ok(true);
     }
     
-    private OrderedThreadItem CreateResolvedEntry(string commentId, string userId)
+    private StatusUpdate CreateResolvedEntry(string commentId, string userId)
     {
         return new StatusUpdate()
         {
@@ -197,9 +201,9 @@ public class CommentLogic
             return LogicResponse<bool>.Fail("Comment is already unresolved", LogicResponseType.Conflict);
         }
 
-        OrderedThreadItem reopenedEntry = CreateReopenedEntry(comment.Id, userId);
+        StatusUpdate reopenedEntry = CreateReopenedEntry(comment.Id, userId);
         
-        comment.Replies.Add(reopenedEntry);
+        comment.Events.Add(reopenedEntry);
         comment.ResolvedAt = DateTime.UtcNow;
         comment.IsResolved = false;
         _dbContext.Comments.Update(comment);
@@ -207,7 +211,7 @@ public class CommentLogic
         return LogicResponse<bool>.Ok(true);
     }
     
-    private OrderedThreadItem CreateReopenedEntry(string commentId, string userId)
+    private StatusUpdate CreateReopenedEntry(string commentId, string userId)
     {
         return new StatusUpdate()
         {
@@ -280,6 +284,7 @@ public class CommentLogic
         List<Comment> comments = await _dbContext.Comments
             .Where(c => c.DifficultyDiscussionId == difficultyDiscussionId)
             .Include(c => c.Replies)
+            .Include(c => c.Events)
             .ToListAsync();
         
         if (comments.Count == 0)
@@ -301,6 +306,7 @@ public class CommentLogic
         List<Comment> comments = await _dbContext.Comments
             .Where(c => c.MapDiscussionId == mapDiscussionId && c.DifficultyDiscussionId == null)
             .Include(c => c.Replies)
+            .Include(c => c.Events)
             .ToListAsync();
         
         if (comments.Count == 0)

@@ -25,6 +25,7 @@ namespace CommentService.Controllers
         [HttpGet("all/mapset/{mapDiscussionId}")]
         public async Task<ActionResult<List<Review>>> GetReviewsByMapDiscussionId(string mapDiscussionId)
         {
+            // TODO: consider an option to return comment data instead of ids
             LogicResponse<List<Review>> response = await _reviewLogic.GetReviewsByMapDiscussionIdAsync(mapDiscussionId);
             
             switch (response.Type)

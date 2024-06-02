@@ -11,18 +11,12 @@ public class CommentDbContext : DbContext
     }
 
     public DbSet<Comment> Comments { get; set; }
-    public DbSet<OrderedThreadItem> OrderedThreadItems { get; set; }
     public DbSet<Reply> Replies { get; set; }
     public DbSet<StatusUpdate> StatusUpdates { get; set; }
     public DbSet<Review> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<OrderedThreadItem>()
-            .HasDiscriminator<string>("ItemType")
-            .HasValue<Reply>("Reply")
-            .HasValue<StatusUpdate>("StatusUpdate");
-        
         modelBuilder.Entity<Comment>()
             .HasMany(c => c.Replies)
             .WithOne()

@@ -17,7 +17,7 @@ public class Review
 
     public List<string> CommentIds { get; set; } = new();
     
-    public List<OrderedThreadItem> Replies { get; set; } = new();
+    public List<Reply> Replies { get; set; } = new();
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? EditedAt { get; set; }

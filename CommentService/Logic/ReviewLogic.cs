@@ -16,7 +16,7 @@ public class ReviewLogic
 
     public async Task<LogicResponse<List<Review>>> GetReviewsByMapDiscussionIdAsync(string mapDiscussionId)
     {
-        // TODO: check if mapdiscussion exists
+        // TODO: check if mapdiscussion exists for correct 404 handling or just do a 404 if its null or something
         
         List<Review> reviews = await _dbContext.Reviews.Where(r => r.MapDiscussionId == mapDiscussionId).ToListAsync();
         
