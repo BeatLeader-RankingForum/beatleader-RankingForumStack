@@ -17,7 +17,7 @@ namespace DiscussionService.Logic
             _publishEndpoint = publishEndpoint;
         }
         
-        public async Task<LogicResponse<MapDiscussion>> GetMapDiscussionAsync(string id)
+        public async Task<LogicResponse<MapDiscussion>> GetMapDiscussionAsync(int id)
         {
             MapDiscussion? mapDiscussion = await _dbContext.MapDiscussions
                 .Include(x => x.Discussions)
@@ -61,7 +61,7 @@ namespace DiscussionService.Logic
                 DiscussionOwnerIds = owners,
                 Discussions = discussions
             };
-
+            
             await _dbContext.MapDiscussions.AddAsync(mapDiscussion);
             await _dbContext.SaveChangesAsync();
 

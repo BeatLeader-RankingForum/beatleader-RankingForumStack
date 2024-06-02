@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DiscussionService.Migrations
 {
     /// <inheritdoc />
-    public partial class AddNewDataStructureAndConstraints : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,6 +18,7 @@ namespace DiscussionService.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MapsetId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Phase = table.Column<int>(type: "int", nullable: false),
                     CreatedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DiscussionOwnerIds = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -27,23 +28,21 @@ namespace DiscussionService.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Discussions",
+                name: "DifficultyDiscussions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MapDiscussionId = table.Column<int>(type: "int", nullable: false),
-                    Phase = table.Column<int>(type: "int", nullable: false),
                     Characteristic = table.Column<int>(type: "int", nullable: false),
                     Difficulty = table.Column<int>(type: "int", nullable: false),
-                    CreatedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Discussions", x => x.Id);
+                    table.PrimaryKey("PK_DifficultyDiscussions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Discussions_MapDiscussions_MapDiscussionId",
+                        name: "FK_DifficultyDiscussions_MapDiscussions_MapDiscussionId",
                         column: x => x.MapDiscussionId,
                         principalTable: "MapDiscussions",
                         principalColumn: "Id",
@@ -51,9 +50,9 @@ namespace DiscussionService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Discussions_MapDiscussionId_Phase",
-                table: "Discussions",
-                columns: new[] { "MapDiscussionId", "Phase" },
+                name: "IX_DifficultyDiscussions_MapDiscussionId_Characteristic_Difficulty",
+                table: "DifficultyDiscussions",
+                columns: new[] { "MapDiscussionId", "Characteristic", "Difficulty" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -67,7 +66,7 @@ namespace DiscussionService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Discussions");
+                name: "DifficultyDiscussions");
 
             migrationBuilder.DropTable(
                 name: "MapDiscussions");

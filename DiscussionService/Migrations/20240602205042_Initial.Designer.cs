@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiscussionService.Migrations
 {
     [DbContext(typeof(DiscussionDbContext))]
-    [Migration("20240601002301_moved around some data")]
-    partial class movedaroundsomedata
+    [Migration("20240602205042_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace DiscussionService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DiscussionService.Models.Discussion", b =>
+            modelBuilder.Entity("DiscussionService.Models.DifficultyDiscussion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace DiscussionService.Migrations
                     b.HasIndex("MapDiscussionId", "Characteristic", "Difficulty")
                         .IsUnique();
 
-                    b.ToTable("Discussions");
+                    b.ToTable("DifficultyDiscussions");
                 });
 
             modelBuilder.Entity("DiscussionService.Models.MapDiscussion", b =>
@@ -83,7 +83,7 @@ namespace DiscussionService.Migrations
                     b.ToTable("MapDiscussions");
                 });
 
-            modelBuilder.Entity("DiscussionService.Models.Discussion", b =>
+            modelBuilder.Entity("DiscussionService.Models.DifficultyDiscussion", b =>
                 {
                     b.HasOne("DiscussionService.Models.MapDiscussion", null)
                         .WithMany("Discussions")

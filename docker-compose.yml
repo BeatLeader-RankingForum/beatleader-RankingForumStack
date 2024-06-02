@@ -22,6 +22,7 @@ services:
       - DB_NAME=rf-discussion
       - DB_SA_PASSWORD=SuperStrong!
       - RABBITMQ_HOST=rankingforum-mq
+      - JWT_SECRET_KEY=DevelopmentSecretKey543523465463
     networks:
       - backend-common
       - backend-discussion

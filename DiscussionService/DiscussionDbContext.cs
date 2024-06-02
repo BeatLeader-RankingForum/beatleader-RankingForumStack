@@ -1,5 +1,6 @@
 ﻿using DiscussionService.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DiscussionService
 {
@@ -23,6 +24,21 @@ namespace DiscussionService
             modelBuilder.Entity<DifficultyDiscussion>()
                 .HasIndex(d => new { d.MapDiscussionId, d.Characteristic, d.Difficulty })
                 .IsUnique();
+            
+            modelBuilder.Entity<MapDiscussion>()
+                .HasMany(c => c.Discussions)
+                .WithOne()
+                .HasForeignKey(r => r.MapDiscussionId);
+            
+            modelBuilder.Entity<MapDiscussion>()
+                .Property(r => r.DiscussionOwnerIds)
+                .HasConversion(
+                    v => string.Join(';', v),
+                    v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList())
+                .Metadata.SetValueComparer(new ValueComparer<ICollection<string>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
         }
 
         internal static void ApplyMigrations(IHost app)

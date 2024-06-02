@@ -22,7 +22,7 @@ namespace DiscussionService.Controllers
 
         // get map discussion by id
         [HttpGet("{id}")]
-        public async Task<ActionResult<MapDiscussion>> GetMapDiscussion(string id)
+        public async Task<ActionResult<MapDiscussion>> GetMapDiscussion(int id)
         {
             LogicResponse<MapDiscussion> response = await _mapDiscussionLogic.GetMapDiscussionAsync(id);
             

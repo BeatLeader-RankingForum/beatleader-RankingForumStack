@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiscussionService.Migrations
 {
     [DbContext(typeof(DiscussionDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    partial class DiscussionDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -24,9 +24,11 @@ namespace DiscussionService.Migrations
 
             modelBuilder.Entity("DiscussionService.Models.DifficultyDiscussion", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Characteristic")
                         .HasColumnType("int");
@@ -37,9 +39,8 @@ namespace DiscussionService.Migrations
                     b.Property<bool>("IsLocked")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MapDiscussionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("MapDiscussionId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -51,9 +52,11 @@ namespace DiscussionService.Migrations
 
             modelBuilder.Entity("DiscussionService.Models.MapDiscussion", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedOnUtc")
                         .HasColumnType("datetime2");
