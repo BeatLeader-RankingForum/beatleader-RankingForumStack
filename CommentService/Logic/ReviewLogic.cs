@@ -16,12 +16,9 @@ public class ReviewLogic
 
     public async Task<LogicResponse<List<Review>>> GetReviewsByMapDiscussionIdAsync(string mapDiscussionId)
     {
+        // TODO: check if mapdiscussion exists
+        
         List<Review> reviews = await _dbContext.Reviews.Where(r => r.MapDiscussionId == mapDiscussionId).ToListAsync();
-
-        if (reviews.Count <= 0)
-        {
-            return LogicResponse<List<Review>>.Fail("No reviews found", LogicResponseType.NotFound);
-        }
         
         return LogicResponse<List<Review>>.Ok(reviews);
     }
@@ -110,6 +107,7 @@ public class ReviewLogic
         review.EditedAt = DateTime.UtcNow;
         review.IsEdited = true;
         
+        _dbContext.Reviews.Update(review);
         await _dbContext.SaveChangesAsync();
         
         return LogicResponse<Review>.Ok(review);

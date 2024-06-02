@@ -13,7 +13,9 @@ public class OrderedThreadItem
     public required string CommentId { get; set; }
     
     public bool IsEdited { get; set; } = false;
+    public bool IsDeleted { get; set; } = false;
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? EditedAt { get; set; } = null;
+    public DateTime? DeletedAt { get; set; } = null;
 }

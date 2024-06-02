@@ -31,10 +31,7 @@ public class CommentLogic
 
     public async Task<LogicResponse<Comment>> AddCommentAsync(AddCommentDto commentDto, string userId)
     {
-        // TODO: check if user exists
-        
         // TODO; check if discussions exist
-        
         
         if (await _dbContext.Comments.AnyAsync(
                 u => u.AuthorId == userId && u.DifficultyDiscussionId == commentDto.DifficultyDiscussionId
@@ -89,7 +86,8 @@ public class CommentLogic
         comment.Type = commentDto.Type ?? comment.Type;
         comment.EditedAt = DateTime.UtcNow;
         comment.IsEdited = true;
-        
+
+        _dbContext.Comments.Update(comment);
         await _dbContext.SaveChangesAsync();
         
         return LogicResponse<Comment>.Ok(comment);
@@ -131,12 +129,17 @@ public class CommentLogic
 
     public async Task<LogicResponse<bool>> ResolveCommentAsync(string id, string userId)
     {
-        // TODO: disallow the resolving of notes, praise, and hype
         Comment? comment = await _dbContext.Comments.Include(c => c.Replies).FirstOrDefaultAsync(c => c.Id == id);
 
         if (comment is null || comment.IsDeleted)
         {
             return LogicResponse<bool>.Fail($"Comment with id {id} not found", LogicResponseType.NotFound);
+        }
+
+        if (comment.Type == CommentType.Note || comment.Type == CommentType.Praise || comment.Type == CommentType.Hype)
+        {
+            return LogicResponse<bool>.Fail("Cannot resolve note, praise, or hype comment",
+                LogicResponseType.Forbidden);
         }
         
         /* TODO: add discussion owner fetch and check
