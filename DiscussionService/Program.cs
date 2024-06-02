@@ -48,6 +48,7 @@ builder.Services.AddSwaggerGen(options =>
 
 // DI
 builder.Services.AddScoped<MapDiscussionLogic>();
+builder.Services.AddScoped<DifficultyDiscussionLogic>();
 
 // EF CORE
 string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
