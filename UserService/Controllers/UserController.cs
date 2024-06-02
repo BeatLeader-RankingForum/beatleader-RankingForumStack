@@ -1,3 +1,4 @@
+using Contracts;
 using Contracts.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +44,8 @@ namespace UserService.Controllers
                     return BadRequest(response.ErrorMessage);
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
                 default:
                     throw new Exception($"Method HandleLoginAsync at Login(loginDto) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
@@ -67,6 +70,8 @@ namespace UserService.Controllers
                     return BadRequest(response.ErrorMessage);
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
                 default:
                     throw new Exception($"Method RefreshTokensAsync at Refresh(tokens) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
@@ -99,6 +104,8 @@ namespace UserService.Controllers
                     return BadRequest(response.ErrorMessage);
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
                 default:
                     throw new Exception($"Method LogoutAsync at Logout(tokens) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
@@ -156,6 +163,8 @@ namespace UserService.Controllers
                     return BadRequest(response.ErrorMessage);
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
                 default:
                     throw new Exception($"Method CreateUserFromIdAsync at CreateUser(id) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
@@ -181,6 +190,8 @@ namespace UserService.Controllers
                     return BadRequest(response.ErrorMessage);
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
                 default:
                     throw new Exception($"Method CreateUserFromIdAsync at CreateUser(id) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
@@ -206,6 +217,8 @@ namespace UserService.Controllers
                     return BadRequest(response.ErrorMessage);
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
                 default:
                     throw new Exception($"Method AddUserRoleAsync at AddRole(data) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
@@ -231,6 +244,8 @@ namespace UserService.Controllers
                     return BadRequest(response.ErrorMessage);
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
                 default:
                     throw new Exception($"Method RemoveUserRoleAsync at RemoveRole(data) returned an unexpected response type. Message: {response.ErrorMessage}");
             }
@@ -256,6 +271,8 @@ namespace UserService.Controllers
                     return BadRequest(response.ErrorMessage);
                 case LogicResponseType.Unauthorized:
                     return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
                 default:
                     throw new Exception($"Method DeleteUserAsync at DeleteUser(data) returned an unexpected response type. Message: {response.ErrorMessage}");
             }

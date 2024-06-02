@@ -1,4 +1,4 @@
-﻿namespace UserService.DTOs
+﻿namespace Contracts
 {
     public class LogicResponse<T>
     {
@@ -17,6 +17,7 @@
         NotFound,
         Conflict,
         BadRequest,
-        Unauthorized
+        Unauthorized,
+        Forbidden
     }
 }

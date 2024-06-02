@@ -12,7 +12,6 @@ public class OrderedThreadItem
     [ForeignKey(nameof(Comment))]
     public required string CommentId { get; set; }
     
-    public int Position { get; set; }
     public bool IsEdited { get; set; } = false;
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

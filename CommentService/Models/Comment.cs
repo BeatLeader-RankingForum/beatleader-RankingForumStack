@@ -12,6 +12,8 @@ public class Comment
     public required string MapDiscussionId { get; set; }
     public string? DifficultyDiscussionId { get; set; } // if null then it's a general comment for all difficulties
     //public required int DifficultyVersion { get; set; } TODO: implement
+    
+    // TODO: consider storing the review id too for easy reference in front-end
 
     public required string Body { get; set; }
     public string? ImageLink { get; set; } // TODO: temp, make our image hosting
@@ -19,12 +21,14 @@ public class Comment
     public CommentType Type { get; set; }
     public bool IsResolved { get; set; }
     public bool IsEdited { get; set; }
+    public bool IsDeleted { get; set; }
 
     public List<OrderedThreadItem> Replies { get; set; } = new();
     
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     public DateTime? EditedAt { get; set; }
     public DateTime? ResolvedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
 
 
 }

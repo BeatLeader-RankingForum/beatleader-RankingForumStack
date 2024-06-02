@@ -6,5 +6,6 @@ public enum CommentType
     Hype = 1,
     Suggestion = 2,
     QualityProblem = 3,
-    CriteriaProblem = 4
+    CriteriaProblem = 4,
+    Note = 5
 }
