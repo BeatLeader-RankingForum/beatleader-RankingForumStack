@@ -83,6 +83,18 @@ builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
 builder.Services.AddHttpClient();
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:8888")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 UserDbContext.ApplyMigrations(app);
@@ -101,6 +113,8 @@ if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("JWT_SE
 }
 
 JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+app.UseCors("AllowOrigin");
 
 app.UseAuthentication();
 

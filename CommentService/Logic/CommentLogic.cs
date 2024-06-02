@@ -276,6 +276,7 @@ public class CommentLogic
 
     public async Task<LogicResponse<GetAllDiffCommentsDto>> GetAllDifficultyCommentsAsync(string difficultyDiscussionId)
     {
+        // TODO: change this to not give not found if there are no comments, but only if the difficultydiscussionid doesnt exist?
         List<Comment> comments = await _dbContext.Comments
             .Where(c => c.DifficultyDiscussionId == difficultyDiscussionId)
             .Include(c => c.Replies)

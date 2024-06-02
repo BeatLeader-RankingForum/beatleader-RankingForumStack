@@ -109,6 +109,18 @@ builder.Services.Configure<IpRateLimitOptions>(opt =>
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 builder.Services.AddInMemoryRateLimiting();
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:8888")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 DiscussionDbContext.ApplyMigrations(app);
@@ -127,6 +139,10 @@ if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("JWT_SE
 }
 
 JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+app.UseCors("AllowOrigin");
+
+app.UseIpRateLimiting();
 
 //app.UseHttpsRedirection();
 
