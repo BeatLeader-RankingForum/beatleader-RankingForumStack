@@ -8,10 +8,10 @@ namespace DiscussionService.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public required string MapsetId { get; set; } // Must be unique, this can be used as a secondary primary key for use in the front-end
-        
-        public PhaseEnum Phase { get; set; }
+
+        public PhaseEnum Phase { get; set; } = PhaseEnum.Phase1;
 
         public DateTime CreatedOnUtc { get; set; } = DateTime.UtcNow;
         public List<string> DiscussionOwnerIds { get; set; } = new List<string>(); // The user IDs of the accounts responsible for replying to this discussion AKA mapper(s) of the map

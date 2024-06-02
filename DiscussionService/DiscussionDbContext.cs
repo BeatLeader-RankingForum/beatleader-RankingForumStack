@@ -10,7 +10,7 @@ namespace DiscussionService
         }
 
         public DbSet<MapDiscussion> MapDiscussions { get; set; }
-        public DbSet<DifficultyDiscussion> Discussions { get; set; }
+        public DbSet<DifficultyDiscussion> DifficultyDiscussions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

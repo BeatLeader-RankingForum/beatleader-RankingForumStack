@@ -129,7 +129,7 @@ builder.Services.Configure<IpRateLimitOptions>(opt =>
     };
 
 });
-
+// TODO: add more rate limit rules
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 builder.Services.AddInMemoryRateLimiting();
 

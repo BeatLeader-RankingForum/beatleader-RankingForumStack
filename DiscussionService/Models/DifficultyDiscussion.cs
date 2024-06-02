@@ -8,9 +8,9 @@ namespace DiscussionService.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [ForeignKey(nameof(MapDiscussion))]
-        public int MapDiscussionId { get; set; }
+        public string MapDiscussionId { get; set; }
 
         public int Characteristic { get; set; }
         public int Difficulty { get; set; }

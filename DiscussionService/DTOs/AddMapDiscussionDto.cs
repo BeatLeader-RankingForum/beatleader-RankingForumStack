@@ -1,6 +1,6 @@
 ﻿namespace DiscussionService.DTOs
 {
-    public class CreateMapDiscussionDto
+    public class AddMapDiscussionDto
     {
         public required string MapsetId { get; set; }
     }

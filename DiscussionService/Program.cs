@@ -1,27 +1,62 @@
+using AspNetCoreRateLimit;
+using Contracts.Auth.OptionsSetup;
 using DiscussionService;
 using DiscussionService.Logic;
 using MassTransit;
 using MassTransit.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
+// SWAGGER
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new() { Title = "DiscussionService", Version = "v1" });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+    });
+    
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
+
+// DI
 builder.Services.AddScoped<MapDiscussionLogic>();
 
+// EF CORE
 string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
 string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-discussion";
 string dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD") ?? "SuperStrong!";
 string connectionString = $"Data Source={dbHost}; Initial Catalog={dbName}; User ID=sa; Password={dbPassword}; Encrypt=true; TrustServerCertificate=true;";
 builder.Services.AddDbContext<DiscussionDbContext>(options => options.UseSqlServer(connectionString));
 
-
+// MASSTRANSIT
 builder.Services.AddMassTransit(busFactoryConfigurator =>
 {
     busFactoryConfigurator.SetKebabCaseEndpointNameFormatter();
@@ -38,6 +73,41 @@ builder.Services.AddMassTransit(busFactoryConfigurator =>
     });
 });
 
+// OPTIONS
+builder.Services.ConfigureOptions<JwtOptionsSetup>();
+builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+builder.Services.ConfigureOptions<AuthorizeOptionsSetup>();
+
+// AUTHENTICATION
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer();
+
+builder.Services.AddAuthorization();
+
+// RATELIMITING
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(opt =>
+{
+    opt.EnableEndpointRateLimiting = true;
+    opt.StackBlockedRequests = false;
+    opt.HttpStatusCode = 429;
+    opt.RealIpHeader = "X-Real-IP";
+    opt.ClientIdHeader = "X-Client-Id";
+    opt.GeneralRules = new List<RateLimitRule>
+    {
+        new RateLimitRule
+        {
+            Endpoint = "*",
+            Period = "10s",
+            Limit = 50,
+        },
+    };
+
+});
+// TODO: add more rate limit rules
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddInMemoryRateLimiting();
+
 var app = builder.Build();
 
 DiscussionDbContext.ApplyMigrations(app);
@@ -49,7 +119,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("JWT_SECRET_KEY").ToLower().Contains("development"))
+{
+    Console.WriteLine("The application will be terminated due to an insecure JWT_SECRET_KEY.");
+    Environment.FailFast("The application has been terminated due to an insecure JWT_SECRET_KEY.");
+}
+
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
