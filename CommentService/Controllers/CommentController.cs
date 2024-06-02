@@ -22,13 +22,90 @@ namespace CommentService.Controllers
         }
         
         
-        // get all comments for a specfic difficulty (general diff comments, timeline comments)
+        // get all comments for a specfic difficulty (general diff comments, beat-numbered comments)
+        [HttpGet("all/difficulty/{difficultyDiscussionId}")]
+        public async Task<ActionResult<GetAllDiffCommentsDto>> GetAllDifficultyComments(string difficultyDiscussionId)
+        {
+            LogicResponse<GetAllDiffCommentsDto> response = await _commentLogic.GetAllDifficultyCommentsAsync(difficultyDiscussionId);
+            
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
+                default:
+                    throw new Exception($"Method GetAllDifficultyCommentsAsync at GetAllDifficultyComments(id) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+            
+            return Ok(response.Data);
+        }
+        
         
         // get all comments for a specific mapset (mapset comments, reviews)
+        [HttpGet("all/mapset/{mapDiscussionId}")]
+        public async Task<ActionResult<GetAllMapCommentsDto>> GetAllMapsetComments(string mapDiscussionId)
+        {
+            LogicResponse<GetAllMapCommentsDto> response = await _commentLogic.GetAllMapsetCommentsAsync(mapDiscussionId);
+            
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
+                default:
+                    throw new Exception($"Method GetAllMapsetCommentsAsync at GetAllMapsetComments(id) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+            
+            return Ok(response.Data);
+        }
         
         
         // get number of comments over the whole mapset by comment type / status
-        
+        [HttpGet("stats/{mapDiscussionId}/{difficultyDiscussionId}")]
+        public async Task<ActionResult<CommentStatsDto>> GetCommentStats(string mapDiscussionId, string difficultyDiscussionId)
+        {
+            string? userId = User.Identity?.Name;
+            
+            LogicResponse<CommentStatsDto> response = await _commentLogic.GetCommentStatsAsync(mapDiscussionId, difficultyDiscussionId, userId);
+            
+            switch (response.Type)
+            {
+                case LogicResponseType.None:
+                    break;
+                case LogicResponseType.NotFound:
+                    return NotFound(response.ErrorMessage);
+                case LogicResponseType.Conflict:
+                    return Conflict(response.ErrorMessage);
+                case LogicResponseType.BadRequest:
+                    return BadRequest(response.ErrorMessage);
+                case LogicResponseType.Unauthorized:
+                    return Unauthorized(response.ErrorMessage);
+                case LogicResponseType.Forbidden:
+                    return Forbid(response.ErrorMessage!);
+                default:
+                    throw new Exception($"Method GetCommentStatsAsync at GetCommentStats(id) returned an unexpected response type. Message: {response.ErrorMessage}");
+            }
+            
+            return Ok(response.Data);
+        }
         
         // get a comment by id
         [HttpGet("{id}")]

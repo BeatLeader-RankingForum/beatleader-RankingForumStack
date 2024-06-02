@@ -47,6 +47,8 @@ builder.Services.AddSwaggerGen(options =>
 
 // DI
 builder.Services.AddScoped<CommentLogic>();
+builder.Services.AddScoped<ReplyLogic>();
+builder.Services.AddScoped<ReviewLogic>();
 
 // EF CORE
 string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";

@@ -14,6 +14,7 @@ public class CommentDbContext : DbContext
     public DbSet<OrderedThreadItem> OrderedThreadItems { get; set; }
     public DbSet<Reply> Replies { get; set; }
     public DbSet<StatusUpdate> StatusUpdates { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -8,10 +8,12 @@ namespace CommentService.Logic;
 public class CommentLogic
 {
     private readonly CommentDbContext _dbContext;
+    private readonly ReviewLogic _reviewLogic;
     
-    public CommentLogic(CommentDbContext dbContext)
+    public CommentLogic(CommentDbContext dbContext, ReviewLogic reviewLogic)
     {
         _dbContext = dbContext;
+        _reviewLogic = reviewLogic;
     }
 
     public async Task<LogicResponse<Comment>> GetCommentByIdAsync(string id)
@@ -127,6 +129,7 @@ public class CommentLogic
 
     public async Task<LogicResponse<bool>> ResolveCommentAsync(string id, string userId)
     {
+        // TODO: disallow the resolving of notes, praise, and hype
         Comment? comment = await _dbContext.Comments.Include(c => c.Replies).FirstOrDefaultAsync(c => c.Id == id);
 
         if (comment is null || comment.IsDeleted)
@@ -207,5 +210,108 @@ public class CommentLogic
             AuthorId = userId,
             Type = UpdateType.Reopened
         };
+    }
+
+    public async Task<LogicResponse<CommentStatsDto>> GetCommentStatsAsync(string mapDiscussionId, string difficultyDiscussionId, string? userId = null)
+    {
+        // TODO: check performance of this, maybe add caching or indexing
+        int? userCommentsCount = null;
+        if (userId is not null)
+        {
+            userCommentsCount = await _dbContext.Comments
+                .Where(c => c.MapDiscussionId == mapDiscussionId
+                            && (c.DifficultyDiscussionId == null || c.DifficultyDiscussionId == difficultyDiscussionId)
+                            && c.IsDeleted == false && c.AuthorId == userId)
+                .CountAsync();
+        }
+        
+        int notesCount = await _dbContext.Comments
+            .Where(c => c.MapDiscussionId == mapDiscussionId
+                        && (c.DifficultyDiscussionId == null || c.DifficultyDiscussionId == difficultyDiscussionId)
+                        && c.IsDeleted == false && c.Type == CommentType.Note)
+            .CountAsync();
+        
+        int resolvedCount = await _dbContext.Comments
+            .Where(c => c.MapDiscussionId == mapDiscussionId
+                        && (c.DifficultyDiscussionId == null || c.DifficultyDiscussionId == difficultyDiscussionId)
+                        && c.IsDeleted == false && c.IsResolved == true)
+            .CountAsync();
+        
+        int pendingCount = await _dbContext.Comments
+            .Where(c => c.MapDiscussionId == mapDiscussionId
+                        && (c.DifficultyDiscussionId == null || c.DifficultyDiscussionId == difficultyDiscussionId)
+                        && c.IsDeleted == false && c.IsResolved == false && c.Type != CommentType.Note && c.Type != CommentType.Praise && c.Type != CommentType.Hype)
+            .CountAsync();
+        
+        int praiseCount = await _dbContext.Comments
+            .Where(c => c.MapDiscussionId == mapDiscussionId
+                        && (c.DifficultyDiscussionId == null || c.DifficultyDiscussionId == difficultyDiscussionId)
+                        && c.IsDeleted == false && ( c.Type == CommentType.Praise || c.Type == CommentType.Hype))
+            .CountAsync();
+        
+        int allCount = await _dbContext.Comments
+            .Where(c => c.MapDiscussionId == mapDiscussionId
+                        && (c.DifficultyDiscussionId == null || c.DifficultyDiscussionId == difficultyDiscussionId)
+                        && c.IsDeleted == false)
+            .CountAsync();
+        
+        return LogicResponse<CommentStatsDto>.Ok(new CommentStatsDto
+        {
+            UserCommentsCount = userCommentsCount ?? 0,
+            AllCommentsCount = allCount,
+            NotesCount = notesCount,
+            ResolvedCount = resolvedCount,
+            OpenCount = pendingCount,
+            PraiseCount = praiseCount
+        });
+    }
+
+    public async Task<LogicResponse<GetAllDiffCommentsDto>> GetAllDifficultyCommentsAsync(string difficultyDiscussionId)
+    {
+        List<Comment> comments = await _dbContext.Comments
+            .Where(c => c.DifficultyDiscussionId == difficultyDiscussionId)
+            .Include(c => c.Replies)
+            .ToListAsync();
+        
+        if (comments.Count == 0)
+        {
+            return LogicResponse<GetAllDiffCommentsDto>.Fail("No comments found for given difficulty discussion", LogicResponseType.NotFound);
+        }
+        
+        GetAllDiffCommentsDto commentsDto = new GetAllDiffCommentsDto
+        {
+            GeneralDiffComments = comments.Where(c => c.BeatNumber == null).ToList(),
+            BeatNumberedComments = comments.Where(c => c.BeatNumber != null).ToList()
+        };
+        
+        return LogicResponse<GetAllDiffCommentsDto>.Ok(commentsDto);
+    }
+
+    public async Task<LogicResponse<GetAllMapCommentsDto>> GetAllMapsetCommentsAsync(string mapDiscussionId)
+    {
+        List<Comment> comments = await _dbContext.Comments
+            .Where(c => c.MapDiscussionId == mapDiscussionId && c.DifficultyDiscussionId == null)
+            .Include(c => c.Replies)
+            .ToListAsync();
+        
+        if (comments.Count == 0)
+        {
+            return LogicResponse<GetAllMapCommentsDto>.Fail("No comments found for given mapset discussion", LogicResponseType.NotFound);
+        }
+
+        var reviewsResult = await _reviewLogic.GetReviewsByMapDiscussionId(mapDiscussionId);
+        if (reviewsResult.Success == false && reviewsResult.Type != LogicResponseType.NotFound)
+        {
+            return LogicResponse<GetAllMapCommentsDto>.Fail(reviewsResult.ErrorMessage!, reviewsResult.Type);
+        }
+        List<Review> reviews = reviewsResult.Data ?? new List<Review>();
+        
+        GetAllMapCommentsDto commentsDto = new GetAllMapCommentsDto
+        {
+            GeneralMapComments = comments,
+            MapReviews = reviews
+        };
+        
+        return LogicResponse<GetAllMapCommentsDto>.Ok(commentsDto);
     }
 }
