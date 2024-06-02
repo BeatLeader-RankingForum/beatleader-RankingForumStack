@@ -27,6 +27,11 @@ public class CommentDbContext : DbContext
             .HasMany(c => c.Replies)
             .WithOne()
             .HasForeignKey(r => r.CommentId);
+        
+        modelBuilder.Entity<Review>()
+            .HasMany(c => c.Replies)
+            .WithOne()
+            .HasForeignKey(r => r.CommentId);
 
         modelBuilder.Entity<Review>()
             .Property(r => r.CommentIds)

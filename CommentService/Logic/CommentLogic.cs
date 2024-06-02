@@ -33,6 +33,8 @@ public class CommentLogic
     {
         // TODO: check if user exists
         
+        // TODO; check if discussions exist
+        
         
         if (await _dbContext.Comments.AnyAsync(
                 u => u.AuthorId == userId && u.DifficultyDiscussionId == commentDto.DifficultyDiscussionId
@@ -255,6 +257,9 @@ public class CommentLogic
                         && c.IsDeleted == false)
             .CountAsync();
         
+        int reviewCount = await _dbContext.Reviews.Where(c => c.MapDiscussionId == mapDiscussionId && c.IsDeleted == false).CountAsync();
+        allCount += reviewCount;
+        
         return LogicResponse<CommentStatsDto>.Ok(new CommentStatsDto
         {
             UserCommentsCount = userCommentsCount ?? 0,
@@ -262,7 +267,7 @@ public class CommentLogic
             NotesCount = notesCount,
             ResolvedCount = resolvedCount,
             OpenCount = pendingCount,
-            PraiseCount = praiseCount
+            PraiseCount = praiseCount,
         });
     }
 
@@ -299,7 +304,7 @@ public class CommentLogic
             return LogicResponse<GetAllMapCommentsDto>.Fail("No comments found for given mapset discussion", LogicResponseType.NotFound);
         }
 
-        var reviewsResult = await _reviewLogic.GetReviewsByMapDiscussionId(mapDiscussionId);
+        var reviewsResult = await _reviewLogic.GetReviewsByMapDiscussionIdAsync(mapDiscussionId);
         if (reviewsResult.Success == false && reviewsResult.Type != LogicResponseType.NotFound)
         {
             return LogicResponse<GetAllMapCommentsDto>.Fail(reviewsResult.ErrorMessage!, reviewsResult.Type);

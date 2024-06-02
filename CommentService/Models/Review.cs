@@ -13,9 +13,13 @@ public class Review
     
     public required string Body { get; set; }
     public bool IsEdited { get; set; }
+    public bool IsDeleted { get; set; }
 
     public List<string> CommentIds { get; set; } = new();
     
+    public List<OrderedThreadItem> Replies { get; set; } = new();
+    
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? EditedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
 }

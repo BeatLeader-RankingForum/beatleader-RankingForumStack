@@ -114,6 +114,18 @@ builder.Services.Configure<IpRateLimitOptions>(opt =>
             Period = "5s",
             Limit = 5,
         },
+        new RateLimitRule
+        {
+            Endpoint = "GET:/comment/all/*",
+            Period = "5s",
+            Limit = 5,
+        },
+        new RateLimitRule
+        {
+            Endpoint = "GET:/comment/stats/*",
+            Period = "5s",
+            Limit = 5,
+        },
     };
 
 });

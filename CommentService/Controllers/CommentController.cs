@@ -316,16 +316,5 @@ namespace CommentService.Controllers
             return Ok();
         }
         
-        
-        
-        // review controller
-        
-        // get a review by id
-        
-        // add review
-        
-        // edit review
-        
-        // delete review
     }
 }
