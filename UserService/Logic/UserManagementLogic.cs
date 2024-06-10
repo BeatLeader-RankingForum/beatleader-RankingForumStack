@@ -23,6 +23,8 @@ public class UserManagementLogic
 
     public async Task<LogicResponse<User>> CreateUserFromIdAsync(string id)
     {
+        // TODO: get id from main server auth token
+        
         // check for existing user with current id
         var existenceCheck = await _dbContext.Users.FindAsync(id);
         if (existenceCheck != null)

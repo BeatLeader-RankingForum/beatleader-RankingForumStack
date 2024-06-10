@@ -50,9 +50,10 @@ builder.Services.AddScoped<UserManagementLogic>();
 
 string dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
 string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-user";
-string dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD") ?? "SuperStrong!";
-string connectionString = $"Data Source={dbHost}; Initial Catalog={dbName}; User ID=sa; Password={dbPassword}; Encrypt=true; TrustServerCertificate=true;";
-builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
+string dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "postgres";
+string dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "SuperStrong!";
+string connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword};";
+builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddMassTransit(busFactoryConfigurator =>
 {

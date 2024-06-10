@@ -52,9 +52,10 @@ services:
       context: .
       dockerfile: UserService/Dockerfile
     environment:
-      - DB_HOST=user-db
+      - DB_HOST=postgres
       - DB_NAME=rf-user
-      - DB_SA_PASSWORD=SuperStrong!
+      - DB_USER=postgres
+      - DB_PASSWORD=SuperStrong!
       - RABBITMQ_HOST=rankingforum-mq
       - JWT_SECRET_KEY=DevelopmentSecretKey543523465463
     networks:
@@ -141,3 +142,19 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+    
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: SuperStrong!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend-common
+
+volumes:
+  postgres_data:
