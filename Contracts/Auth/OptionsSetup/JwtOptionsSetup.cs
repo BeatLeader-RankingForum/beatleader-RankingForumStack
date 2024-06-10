@@ -11,7 +11,9 @@ public class JwtOptionsSetup : IConfigureNamedOptions<JwtOptions>
         options.Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "RankingForumStack";
         options.SecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") ??
                             throw new ArgumentNullException("JWT_SECRET_KEY");
-
+        options.JwtExpiryInMinutes = 30;
+        options.RefreshExpiryInDays = 7;
+        
         if (options.SecretKey.Length < 32)
         {
             throw new ArgumentException("The JWT secret key must be at least 32 characters long.");

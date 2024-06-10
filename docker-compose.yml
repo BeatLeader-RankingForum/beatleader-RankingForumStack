@@ -123,8 +123,8 @@ services:
       - backend-common
     ports:
       - "3900:3900"
-      - "8001:8081"
-      - "8002:8080"
+      - "8001:8080"
+      - "8002:8081"
   
   rankingforum-mq:
     image: rabbitmq:3-management

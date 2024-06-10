@@ -112,12 +112,17 @@ builder.Services.AddInMemoryRateLimiting();
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowOrigin",
+    options.AddPolicy("AllowDevOrigin",
         builder =>
         {
             builder.WithOrigins("http://localhost:8888")
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials();
+            builder.WithOrigins("https://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
 });
 
@@ -140,7 +145,7 @@ if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("JWT_SE
 
 JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-app.UseCors("AllowOrigin");
+app.UseCors("AllowDevOrigin");
 
 app.UseIpRateLimiting();
 

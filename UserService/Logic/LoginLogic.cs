@@ -14,29 +14,43 @@ public class LoginLogic
     private readonly UserDbContext _dbContext;
     private readonly IJwtProvider _jwtProvider;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IWebHostEnvironment _env;
 
-    public LoginLogic(UserDbContext dbContext, IJwtProvider jwtProvider, IHttpClientFactory httpClientFactory)
+    public LoginLogic(UserDbContext dbContext, IJwtProvider jwtProvider, IHttpClientFactory httpClientFactory, IWebHostEnvironment env)
     {
         _dbContext = dbContext;
         _jwtProvider = jwtProvider;
         _httpClientFactory = httpClientFactory;
+        _env = env;
     }
 
     public async Task<LogicResponse<TokensDto>> HandleLoginAsync(LoginDto loginDto)
     {
+        if (loginDto.AuthToken == null) return LogicResponse<TokensDto>.Fail("Invalid credentials", LogicResponseType.Unauthorized);
         string id;
-        try
+        if (_env.IsDevelopment())
         {
-            id = await GetMainServerAuthorizationAndId(loginDto.AuthToken);
+            id = loginDto.Id;
         }
-        catch (Exception e)
+        else
         {
-            if (e.Message == "Invalid authorization token.")
+            try
             {
-                return LogicResponse<TokensDto>.Fail("Invalid credentials", LogicResponseType.Unauthorized);
+                id = await GetMainServerAuthorizationAndId(loginDto.AuthToken);
             }
+            catch (Exception e)
+            {
+                if (e.Message == "Invalid authorization token.")
+                {
+                    return LogicResponse<TokensDto>.Fail("Invalid credentials", LogicResponseType.Unauthorized);
+                }
+                else if (e.GetType() == typeof(ArgumentException))
+                {
+                    return LogicResponse<TokensDto>.Fail("Empty authorization token", LogicResponseType.BadRequest);
+                }
 
-            throw;
+                throw;
+            }
         }
         
         if (id != loginDto.Id)
@@ -65,6 +79,9 @@ public class LoginLogic
 
     private async Task<string> GetMainServerAuthorizationAndId(string authToken)
     {
+        if (string.IsNullOrEmpty(authToken))
+            throw new ArgumentException("Value cannot be null or empty.", nameof(authToken));
+        
         var client = _httpClientFactory.CreateClient();
         client.DefaultRequestHeaders.Add("Cookie", authToken);
         

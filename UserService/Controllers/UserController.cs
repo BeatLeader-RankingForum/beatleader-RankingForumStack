@@ -1,10 +1,13 @@
 using Contracts;
 using Contracts.Auth;
+using Contracts.Auth.Setup;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using UserService.Authentication;
 using UserService.DTOs;
 using UserService.Logic;
@@ -19,17 +22,30 @@ namespace UserService.Controllers
         private readonly LoginLogic _loginLogic;
         private readonly UserDbContext _dbContext;
         private readonly UserManagementLogic _userManagementLogic;
+        private readonly JwtOptions _jwtOptions;
+        private readonly IWebHostEnvironment _env;
 
-        public UserController(LoginLogic loginLogic, UserDbContext dbContext, UserManagementLogic userManagementLogic)
+        public UserController(LoginLogic loginLogic, UserDbContext dbContext, UserManagementLogic userManagementLogic, IOptions<JwtOptions> options, IWebHostEnvironment env)
         {
             _loginLogic = loginLogic;
             _dbContext = dbContext;
             _userManagementLogic = userManagementLogic;
+            _jwtOptions = options.Value;
+            _env = env;
         }
         
         [HttpPost("login")]
         public async Task<ActionResult<TokensDto>> Login(LoginDto loginDto)
         {
+            string? mainServerToken = !(Request.Cookies[".AspNetCore.Cookies"]).IsNullOrEmpty() ? Request.Headers?.Cookie.ToString() : loginDto.AuthToken;
+
+            if (mainServerToken is null && !_env.IsDevelopment())
+            {
+                return Unauthorized("No AuthToken from main server provided.");
+            }
+
+            loginDto.AuthToken = mainServerToken;
+            
             LogicResponse<TokensDto> response = await _loginLogic.HandleLoginAsync(loginDto);
 
             switch (response.Type)
@@ -54,7 +70,7 @@ namespace UserService.Controllers
         }
         
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh(TokensDto tokens)
+        public async Task<ActionResult<TokensDto>> Refresh(TokensDto tokens)
         {
             LogicResponse<TokensDto> response = await _loginLogic.RefreshTokensAsync(tokens);
             

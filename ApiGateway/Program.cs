@@ -17,7 +17,27 @@ else
 }
 
 builder.Services.AddOcelot(builder.Configuration);
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowDevOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:8888")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+            builder.WithOrigins("https://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowDevOrigin");
 
 app.MapGet("/", () => "Hello World!");
 

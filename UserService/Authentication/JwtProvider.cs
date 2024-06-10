@@ -40,7 +40,7 @@ public class JwtProvider : IJwtProvider
                 Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
                 SecurityAlgorithms.HmacSha256);
         
-        var token = new JwtSecurityToken(_jwtOptions.Issuer, _jwtOptions.Audience, claims, null, DateTime.UtcNow.AddMinutes(30), signingCredentials);
+        var token = new JwtSecurityToken(_jwtOptions.Issuer, _jwtOptions.Audience, claims, null, DateTime.UtcNow.AddMinutes(_jwtOptions.JwtExpiryInMinutes), signingCredentials);
 
         string tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
@@ -60,7 +60,7 @@ public class JwtProvider : IJwtProvider
         if (savedRefreshToken != null)
         {
             savedRefreshToken.Token = token;
-            savedRefreshToken.ExpiryDate = DateTime.UtcNow.AddDays(7);
+            savedRefreshToken.ExpiryDate = DateTime.UtcNow.AddDays(_jwtOptions.RefreshExpiryInDays);
             _dbContext.RefreshTokens.Update(savedRefreshToken);
         }
         else
