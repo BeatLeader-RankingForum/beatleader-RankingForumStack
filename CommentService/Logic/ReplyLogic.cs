@@ -122,4 +122,20 @@ public class ReplyLogic
         
         return LogicResponse<bool>.Ok(true);
     }
+
+    public async Task LoadtestCleanup()
+    {
+        if (Environment.GetEnvironmentVariable("LOADTEST") != "true")
+        {
+            return;
+        }
+        
+        List<Reply> replies = await _dbContext.Replies
+            .Where(c => c.Body.Contains("LOADTEST-54632"))
+            .ToListAsync();
+        
+        _dbContext.RemoveRange(replies);
+        
+        await _dbContext.SaveChangesAsync();
+    }
 }
