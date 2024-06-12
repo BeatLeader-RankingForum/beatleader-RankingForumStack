@@ -111,9 +111,9 @@ class WebsiteLurkUser2(HttpUser):
 class WebsitePostUser(HttpUser):
   tasks = [PostReplyTask]
   wait_time = between(5,10)
-  weight = 1
+  weight = 10
 
 class WebsiteCommentUser(HttpUser):
   tasks = [PostCommentTask]
   wait_time = between(5,10)
-  weight = 10
+  weight = 20
