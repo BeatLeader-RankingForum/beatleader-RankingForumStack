@@ -148,7 +148,7 @@ JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 app.UseCors("AllowDevOrigin");
 
-if (Environment.GetEnvironmentVariable("DISABLE_RATE_LIMITING") != "true") app.UseIpRateLimiting();
+if (Environment.GetEnvironmentVariable("LOADTEST") != "true") app.UseIpRateLimiting();
 
 //app.UseHttpsRedirection();
 
