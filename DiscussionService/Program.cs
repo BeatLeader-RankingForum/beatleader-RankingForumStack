@@ -87,31 +87,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 // RATELIMITING
-if (Environment.GetEnvironmentVariable("DISABLE_RATE_LIMITING") != "true")
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(opt =>
 {
-    builder.Services.AddMemoryCache();
-    builder.Services.Configure<IpRateLimitOptions>(opt =>
+    opt.EnableEndpointRateLimiting = true;
+    opt.StackBlockedRequests = false;
+    opt.HttpStatusCode = 429;
+    opt.RealIpHeader = "X-Real-IP";
+    opt.ClientIdHeader = "X-Client-Id";
+    opt.GeneralRules = new List<RateLimitRule>
     {
-        opt.EnableEndpointRateLimiting = true;
-        opt.StackBlockedRequests = false;
-        opt.HttpStatusCode = 429;
-        opt.RealIpHeader = "X-Real-IP";
-        opt.ClientIdHeader = "X-Client-Id";
-        opt.GeneralRules = new List<RateLimitRule>
+        new RateLimitRule
         {
-            new RateLimitRule
-            {
-                Endpoint = "*",
-                Period = "10s",
-                Limit = 50,
-            },
-        };
+            Endpoint = "*",
+            Period = "10s",
+            Limit = 50,
+        },
+    };
 
-    });
-    // TODO: add more rate limit rules
-    builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-    builder.Services.AddInMemoryRateLimiting();
-}
+});
+// TODO: add more rate limit rules
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddInMemoryRateLimiting();
 
 // CORS
 builder.Services.AddCors(options =>
@@ -151,7 +148,7 @@ JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 app.UseCors("AllowDevOrigin");
 
-app.UseIpRateLimiting();
+if (Environment.GetEnvironmentVariable("DISABLE_RATE_LIMITING") != "true") app.UseIpRateLimiting();
 
 //app.UseHttpsRedirection();
 
