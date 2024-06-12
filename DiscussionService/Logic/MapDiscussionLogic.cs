@@ -17,7 +17,7 @@ namespace DiscussionService.Logic
             _publishEndpoint = publishEndpoint;
         }
         
-        public async Task<LogicResponse<MapDiscussion>> GetMapDiscussionAsync(int id)
+        public async Task<LogicResponse<MapDiscussion>> GetMapDiscussionAsync(string id)
         {
             MapDiscussion? mapDiscussion = await _dbContext.MapDiscussions
                 .Include(x => x.Discussions)

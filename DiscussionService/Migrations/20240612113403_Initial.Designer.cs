@@ -3,16 +3,16 @@ using System;
 using DiscussionService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace DiscussionService.Migrations
 {
     [DbContext(typeof(DiscussionDbContext))]
-    [Migration("20240602205042_Initial")]
+    [Migration("20240612113403_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,29 +21,28 @@ namespace DiscussionService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("DiscussionService.Models.DifficultyDiscussion", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("text");
 
                     b.Property<int>("Characteristic")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Difficulty")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsLocked")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<int>("MapDiscussionId")
-                        .HasColumnType("int");
+                    b.Property<string>("MapDiscussionId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -55,25 +54,23 @@ namespace DiscussionService.Migrations
 
             modelBuilder.Entity("DiscussionService.Models.MapDiscussion", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedOnUtc")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DiscussionOwnerIds")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("MapsetId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Phase")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

@@ -15,12 +15,11 @@ namespace DiscussionService.Migrations
                 name: "MapDiscussions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MapsetId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Phase = table.Column<int>(type: "int", nullable: false),
-                    CreatedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiscussionOwnerIds = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    MapsetId = table.Column<string>(type: "text", nullable: false),
+                    Phase = table.Column<int>(type: "integer", nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DiscussionOwnerIds = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,12 +30,11 @@ namespace DiscussionService.Migrations
                 name: "DifficultyDiscussions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MapDiscussionId = table.Column<int>(type: "int", nullable: false),
-                    Characteristic = table.Column<int>(type: "int", nullable: false),
-                    Difficulty = table.Column<int>(type: "int", nullable: false),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    MapDiscussionId = table.Column<string>(type: "text", nullable: false),
+                    Characteristic = table.Column<int>(type: "integer", nullable: false),
+                    Difficulty = table.Column<int>(type: "integer", nullable: false),
+                    IsLocked = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +48,7 @@ namespace DiscussionService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DifficultyDiscussions_MapDiscussionId_Characteristic_Difficulty",
+                name: "IX_DifficultyDiscussions_MapDiscussionId_Characteristic_Diffic~",
                 table: "DifficultyDiscussions",
                 columns: new[] { "MapDiscussionId", "Characteristic", "Difficulty" },
                 unique: true);

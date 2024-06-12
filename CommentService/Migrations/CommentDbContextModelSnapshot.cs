@@ -3,119 +3,115 @@ using System;
 using CommentService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace CommentService.Migrations
 {
     [DbContext(typeof(CommentDbContext))]
-    [Migration("20240602175646_add seperate FK for review replies")]
-    partial class addseperateFKforreviewreplies
+    partial class CommentDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CommentService.Models.Comment", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<float?>("BeatNumber")
                         .HasColumnType("real");
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DifficultyDiscussionId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("EditedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ImageLink")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsEdited")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsResolved")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("MapDiscussionId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("ResolvedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("CommentService.Models.OrderedThreadItem", b =>
+            modelBuilder.Entity("CommentService.Models.Reply", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("CommentId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("EditedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsEdited")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ItemType")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("ReviewId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -123,77 +119,93 @@ namespace CommentService.Migrations
 
                     b.HasIndex("ReviewId");
 
-                    b.ToTable("OrderedThreadItems");
-
-                    b.HasDiscriminator<string>("ItemType").HasValue("OrderedThreadItem");
-
-                    b.UseTphMappingStrategy();
+                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("CommentService.Models.Review", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CommentIds")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("EditedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsEdited")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("MapDiscussionId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("CommentService.Models.Reply", b =>
-                {
-                    b.HasBaseType("CommentService.Models.OrderedThreadItem");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Reply");
-                });
-
             modelBuilder.Entity("CommentService.Models.StatusUpdate", b =>
                 {
-                    b.HasBaseType("CommentService.Models.OrderedThreadItem");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CommentId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("EditedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ReviewId")
+                        .HasColumnType("text");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.HasDiscriminator().HasValue("StatusUpdate");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("StatusUpdates");
                 });
 
-            modelBuilder.Entity("CommentService.Models.OrderedThreadItem", b =>
+            modelBuilder.Entity("CommentService.Models.Reply", b =>
                 {
                     b.HasOne("CommentService.Models.Comment", null)
                         .WithMany("Replies")
@@ -204,8 +216,17 @@ namespace CommentService.Migrations
                         .HasForeignKey("ReviewId");
                 });
 
+            modelBuilder.Entity("CommentService.Models.StatusUpdate", b =>
+                {
+                    b.HasOne("CommentService.Models.Comment", null)
+                        .WithMany("Events")
+                        .HasForeignKey("CommentId");
+                });
+
             modelBuilder.Entity("CommentService.Models.Comment", b =>
                 {
+                    b.Navigation("Events");
+
                     b.Navigation("Replies");
                 });
 

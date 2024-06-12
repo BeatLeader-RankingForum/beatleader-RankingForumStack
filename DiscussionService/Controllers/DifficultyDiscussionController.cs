@@ -21,7 +21,7 @@ namespace DiscussionService.Controllers
         
         // get all difficulty discussions by map discussion id
         [HttpGet("all/{mapDiscussionId}")]
-        public async Task<ActionResult<List<DifficultyDiscussion>>> GetAllDifficultyDiscussionsForMapDiscussion(int mapDiscussionId)
+        public async Task<ActionResult<List<DifficultyDiscussion>>> GetAllDifficultyDiscussionsForMapDiscussion(string mapDiscussionId)
         {
             LogicResponse<List<DifficultyDiscussion>> response = await _difficultyDiscussionLogic.GetAllDifficultyDiscussionsForMapDiscussionAsync(mapDiscussionId);
             
@@ -49,7 +49,7 @@ namespace DiscussionService.Controllers
         
         // get difficulty discussion by id
         [HttpGet("{id}")]
-        public async Task<ActionResult<DifficultyDiscussion>> GetDifficultyDiscussion(int id)
+        public async Task<ActionResult<DifficultyDiscussion>> GetDifficultyDiscussion(string id)
         {
             LogicResponse<DifficultyDiscussion> response = await _difficultyDiscussionLogic.GetDifficultyDiscussionAsync(id);
             
@@ -77,7 +77,7 @@ namespace DiscussionService.Controllers
         // lock difficulty discussion
         [Authorize(Roles = nameof(Role.Moderator))]
         [HttpPost("{id}/lock")]
-        public async Task<ActionResult<DifficultyDiscussion>> LockDifficultyDiscussion(int id)
+        public async Task<ActionResult<DifficultyDiscussion>> LockDifficultyDiscussion(string id)
         {
             LogicResponse<DifficultyDiscussion> response = await _difficultyDiscussionLogic.LockDifficultyDiscussionAsync(id);
             
@@ -105,7 +105,7 @@ namespace DiscussionService.Controllers
         // unlock difficulty discussion
         [Authorize(Roles = nameof(Role.Moderator))]
         [HttpPost("{id}/unlock")]
-        public async Task<ActionResult<DifficultyDiscussion>> UnlockDifficultyDiscussion(int id)
+        public async Task<ActionResult<DifficultyDiscussion>> UnlockDifficultyDiscussion(string id)
         {
             LogicResponse<DifficultyDiscussion> response = await _difficultyDiscussionLogic.UnlockDifficultyDiscussionAsync(id);
             
