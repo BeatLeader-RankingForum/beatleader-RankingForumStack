@@ -87,52 +87,55 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 // RATELIMITING
-builder.Services.AddMemoryCache();
-builder.Services.Configure<IpRateLimitOptions>(opt =>
+if (Environment.GetEnvironmentVariable("DISABLE_RATE_LIMITING") != "true")
 {
-    opt.EnableEndpointRateLimiting = true;
-    opt.StackBlockedRequests = false;
-    opt.HttpStatusCode = 429;
-    opt.RealIpHeader = "X-Real-IP";
-    opt.ClientIdHeader = "X-Client-Id";
-    opt.GeneralRules = new List<RateLimitRule>
+    builder.Services.AddMemoryCache();
+    builder.Services.Configure<IpRateLimitOptions>(opt =>
     {
-        new RateLimitRule
+        opt.EnableEndpointRateLimiting = true;
+        opt.StackBlockedRequests = false;
+        opt.HttpStatusCode = 429;
+        opt.RealIpHeader = "X-Real-IP";
+        opt.ClientIdHeader = "X-Client-Id";
+        opt.GeneralRules = new List<RateLimitRule>
         {
-            Endpoint = "*",
-            Period = "10s",
-            Limit = 50,
-        },
-        new RateLimitRule
-        {
-            Endpoint = "POST:/comment",
-            Period = "5s",
-            Limit = 5,
-        },
-        new RateLimitRule
-        {
-            Endpoint = "PATCH:/comment",
-            Period = "5s",
-            Limit = 5,
-        },
-        new RateLimitRule
-        {
-            Endpoint = "GET:/comment/all/*",
-            Period = "5s",
-            Limit = 5,
-        },
-        new RateLimitRule
-        {
-            Endpoint = "GET:/comment/stats/*",
-            Period = "5s",
-            Limit = 5,
-        },
-    };
+            new RateLimitRule
+            {
+                Endpoint = "*",
+                Period = "10s",
+                Limit = 50,
+            },
+            new RateLimitRule
+            {
+                Endpoint = "POST:/comment",
+                Period = "5s",
+                Limit = 5,
+            },
+            new RateLimitRule
+            {
+                Endpoint = "PATCH:/comment",
+                Period = "5s",
+                Limit = 5,
+            },
+            new RateLimitRule
+            {
+                Endpoint = "GET:/comment/all/*",
+                Period = "5s",
+                Limit = 5,
+            },
+            new RateLimitRule
+            {
+                Endpoint = "GET:/comment/stats/*",
+                Period = "5s",
+                Limit = 5,
+            },
+        };
 
-});
-// TODO: add more rate limit rules
-builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-builder.Services.AddInMemoryRateLimiting();
+    });
+    // TODO: add more rate limit rules
+    builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+    builder.Services.AddInMemoryRateLimiting();
+}
 
 // CORS
 builder.Services.AddCors(options =>

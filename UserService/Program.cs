@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Contracts.Auth.OptionsSetup;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -83,6 +84,33 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
 builder.Services.AddHttpClient();
+
+// RATELIMITING
+if (Environment.GetEnvironmentVariable("DISABLE_RATE_LIMITING") != "true")
+{
+    builder.Services.AddMemoryCache();
+    builder.Services.Configure<IpRateLimitOptions>(opt =>
+    {
+        opt.EnableEndpointRateLimiting = true;
+        opt.StackBlockedRequests = false;
+        opt.HttpStatusCode = 429;
+        opt.RealIpHeader = "X-Real-IP";
+        opt.ClientIdHeader = "X-Client-Id";
+        opt.GeneralRules = new List<RateLimitRule>
+        {
+            new RateLimitRule
+            {
+                Endpoint = "*",
+                Period = "10s",
+                Limit = 50,
+            },
+        };
+
+    });
+    // TODO: add more rate limit rules
+    builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+    builder.Services.AddInMemoryRateLimiting();
+}
 
 // CORS
 builder.Services.AddCors(options =>
