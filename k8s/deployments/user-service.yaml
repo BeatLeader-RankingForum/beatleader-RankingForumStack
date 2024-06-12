@@ -21,8 +21,10 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            - name: DISABLE_RATE_LIMITING
+              value: "true"
             - name: ASPNETCORE_ENVIRONMENT
-              value: "Production"
+              value: "Development"
             - name: ASPNETCORE_HTTP_PORTS
               value: "8080"
             - name: RABBITMQ_HOST
