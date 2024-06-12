@@ -7,9 +7,10 @@ data:
     {
       "Routes": [
         {
-          "UpstreamPathTemplate": "/api/MapDiscussions/{everything}",
-          "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
-          "DownstreamPathTemplate": "/api/MapDiscussions/{everything}",
+          "UpstreamPathTemplate": "/MapDiscussion/{everything}",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/MapDiscussion/{everything}",
           "DownstreamScheme": "http",
           "DownstreamHostAndPorts": [
             {
@@ -17,6 +18,82 @@ data:
               "Port": 8080
             }
           ],
+          
+          "DangerousAcceptAnyServerCertificateValidator": true
+        },
+        {
+          "UpstreamPathTemplate": "/DifficultyDiscussion/{everything}",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/DifficultyDiscussion/{everything}",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "discussion-service-service",
+              "Port": 8080
+            }
+          ],
+          
+          "DangerousAcceptAnyServerCertificateValidator": true
+        },
+        {
+          "UpstreamPathTemplate": "/User/{everything}",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/User/{everything}",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "user-service-service",
+              "Port": 8080
+            }
+          ],
+          
+          "DangerousAcceptAnyServerCertificateValidator": true
+        },
+        {
+          "UpstreamPathTemplate": "/Comment/{everything}",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/Comment/{everything}",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "comment-service-service",
+              "Port": 8080
+            }
+          ],
+          
+          "DangerousAcceptAnyServerCertificateValidator": true
+        },
+        {
+          "UpstreamPathTemplate": "/Reply/{everything}",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/Reply/{everything}",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "comment-service-service",
+              "Port": 8080
+            }
+          ],
+          
+          "DangerousAcceptAnyServerCertificateValidator": true
+        },
+        {
+          "UpstreamPathTemplate": "/Review/{everything}",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/Review/{everything}",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "comment-service-service",
+              "Port": 8080
+            }
+          ],
+          
           "DangerousAcceptAnyServerCertificateValidator": true
         }
       ],

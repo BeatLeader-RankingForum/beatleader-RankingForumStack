@@ -1,0 +1,82 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-deployment
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: lightai39/rf-userservice:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: ASPNETCORE_HTTP_PORTS
+              value: "8080"
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: rabbitmq-url
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-config
+                  key: rabbitmq-port
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: rabbitmq-user
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: rabbitmq-pass
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: postgres-db-url
+            - name: DB_NAME
+              value: rf-user
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: postgres-user
+            - name: DB_SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: postgres-pass
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt-secret-key
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service-service
+spec:
+  selector:
+    app: user-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

@@ -1,11 +1,11 @@
 {
   "Routes": [
-    // User Web API
+    // Discussion service
     {
-      "UpstreamPathTemplate": "/api/MapDiscussions/{everything}",
+      "UpstreamPathTemplate": "/MapDiscussion/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
-      "DownstreamPathTemplate": "/api/MapDiscussions/{everything}",
+      "DownstreamPathTemplate": "/MapDiscussion/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -16,7 +16,83 @@
 
       "DangerousAcceptAnyServerCertificateValidator": true
     },
-    // add more routes here
+    {
+      "UpstreamPathTemplate": "/DifficultyDiscussion/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/DifficultyDiscussion/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "discussionservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    // User service
+    {
+      "UpstreamPathTemplate": "/User/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/User/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "userservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    // Comment service comment
+    {
+      "UpstreamPathTemplate": "/Comment/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/Comment/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/Reply/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/Reply/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/Review/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/Review/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:3900"

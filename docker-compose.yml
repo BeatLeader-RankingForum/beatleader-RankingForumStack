@@ -4,11 +4,13 @@ networks:
   backend-common:
 
   backend-discussion:
-
+    
+  backend-user:
+  
+  backend-comment:
 
 
 services:
-
   discussionservice:
     container_name: discussion-service
     image: ${DOCKER_REGISTRY-}discussionservice
@@ -16,35 +18,64 @@ services:
       context: .
       dockerfile: DiscussionService/Dockerfile
     environment:
-      - DB_HOST=discussion-db
+      - DB_HOST=postgres
       - DB_NAME=rf-discussion
+      - DB_USER=postgres
       - DB_SA_PASSWORD=SuperStrong!
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
-    ports:
-      - "8003:8081"
-      - "8004:8080"
+      - RABBITMQ_HOST=rankingforum-mq
+      - JWT_SECRET_KEY=DevelopmentSecretKey543523465463
     networks:
       - backend-common
       - backend-discussion
+    ports:
+      - "8003:8080"
+      - "8004:8081"
     volumes:
       - ././containers/discussionservice/data/discussionservice:/app/data
-  
-  discussion-db:
-    container_name: discussion-db
-    image: mcr.microsoft.com/mssql/server:2019-latest
+
+  userservice:
+    container_name: user-service
+    image: ${DOCKER_REGISTRY-}userservice
+    build:
+      context: .
+      dockerfile: UserService/Dockerfile
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=SuperStrong!
+      - DB_HOST=postgres
+      - DB_NAME=rf-user
+      - DB_USER=postgres
+      - DB_PASSWORD=SuperStrong!
+      - RABBITMQ_HOST=rankingforum-mq
+      - JWT_SECRET_KEY=DevelopmentSecretKey543523465463
     networks:
-      - backend-discussion
+      - backend-common
+      - backend-user
     ports:
-      - "39001:1433"
+      - "8005:8080"
+      - "8006:8081"
     volumes:
-      - ././containers/discussionservice/db/discussiondb:/var/opt/mssql/data
-
-
+      - ././containers/userservice/data/userservice:/app/data
+        
+  commentservice:
+    container_name: comment-service
+    image: ${DOCKER_REGISTRY-}commentservice
+    build:
+      context: .
+      dockerfile: CommentService/Dockerfile
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=rf-comment
+      - DB_USER=postgres
+      - DB_SA_PASSWORD=SuperStrong!
+      - RABBITMQ_HOST=rankingforum-mq
+      - JWT_SECRET_KEY=DevelopmentSecretKey543523465463
+    networks:
+      - backend-common
+      - backend-comment
+    ports:
+      - "8007:8080"
+      - "8008:8081"
+    volumes:
+      - ././containers/commentservice/data/commentservice:/app/data
 
   apigateway:
     container_name: api-gateway
@@ -52,16 +83,12 @@ services:
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
     networks:
       - backend-common
     ports:
       - "3900:3900"
-      - "8001:8081"
-      - "8002:8080"
+      - "8001:8080"
+      - "8002:8081"
   
   rankingforum-mq:
     image: rabbitmq:3-management
@@ -78,3 +105,19 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+    
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: SuperStrong!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend-common
+
+volumes:
+  postgres_data:

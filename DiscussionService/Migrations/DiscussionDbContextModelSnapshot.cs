@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiscussionService.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DiscussionDbContext))]
+    partial class DiscussionDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -22,7 +22,7 @@ namespace DiscussionService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DiscussionService.Models.Discussion", b =>
+            modelBuilder.Entity("DiscussionService.Models.DifficultyDiscussion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,9 +33,6 @@ namespace DiscussionService.Migrations
                     b.Property<int>("Characteristic")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedOnUtc")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Difficulty")
                         .HasColumnType("int");
 
@@ -45,15 +42,12 @@ namespace DiscussionService.Migrations
                     b.Property<int>("MapDiscussionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Phase")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MapDiscussionId", "Phase")
+                    b.HasIndex("MapDiscussionId", "Characteristic", "Difficulty")
                         .IsUnique();
 
-                    b.ToTable("Discussions");
+                    b.ToTable("DifficultyDiscussions");
                 });
 
             modelBuilder.Entity("DiscussionService.Models.MapDiscussion", b =>
@@ -75,6 +69,9 @@ namespace DiscussionService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Phase")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MapsetId")
@@ -83,7 +80,7 @@ namespace DiscussionService.Migrations
                     b.ToTable("MapDiscussions");
                 });
 
-            modelBuilder.Entity("DiscussionService.Models.Discussion", b =>
+            modelBuilder.Entity("DiscussionService.Models.DifficultyDiscussion", b =>
                 {
                     b.HasOne("DiscussionService.Models.MapDiscussion", null)
                         .WithMany("Discussions")

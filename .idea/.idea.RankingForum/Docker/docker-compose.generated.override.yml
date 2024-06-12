@@ -3,7 +3,7 @@ version: "3.4"
 services:
   apigateway:
     build:
-      context: "G:\\DEV\\repos\\RankingForum"
+      context: "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack"
       dockerfile: "ApiGateway/Dockerfile"
       target: "base"
       args:
@@ -23,21 +23,56 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "apigateway:dev"
     ports:
-    - "127.0.0.1:57009:57100"
-    - "127.0.0.1:57209:57300"
+    - "127.0.0.1:57032:57100"
+    - "127.0.0.1:57232:57300"
     volumes:
-    - "C:\\Users\\Wessel van Hemert\\.nuget\\packages:/home/app/.nuget/packages"
-    - "G:\\DEV\\repos\\RankingForum\\ApiGateway:/app:rw"
-    - "G:\\DEV\\repos\\RankingForum:/src:rw"
-    - "C:\\Users\\Wessel van Hemert\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\\
-      2024.1.2\\Linux64:/opt/rider-debugger"
+    - "C:\\Users\\info\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack\\ApiGateway:/app:rw"
+    - "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack:/src:rw"
+    - "C:\\Users\\info\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2024.1.2\\\
+      Linux64:/opt/rider-debugger"
     - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.1.2\\bin:/etc/opt/rider-debugger/backend-log.xml"
-    - "C:\\Users\\Wessel van Hemert\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\\
-      DebuggerWorker\\JetBrains.Debugger.Worker.2024_5_14_17_35_22:/var/opt/rider-debugger:rw"
+    - "C:\\Users\\info\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2024_6_12_13_34_21:/var/opt/rider-debugger:rw"
+    working_dir: "/app"
+  commentservice:
+    build:
+      context: "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack"
+      dockerfile: "CommentService/Dockerfile"
+      target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
+    command: []
+    entrypoint:
+    - "/opt/rider-debugger/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
+    image: "commentservice:dev"
+    ports:
+    - "127.0.0.1:57033:57100"
+    - "127.0.0.1:57233:57300"
+    volumes:
+    - "C:\\Users\\info\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack\\CommentService:/app:rw"
+    - "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack:/src:rw"
+    - "C:\\Users\\info\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2024.1.2\\\
+      Linux64:/opt/rider-debugger"
+    - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.1.2\\bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "C:\\Users\\info\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2024_6_12_13_34_21:/var/opt/rider-debugger:rw"
     working_dir: "/app"
   discussionservice:
     build:
-      context: "G:\\DEV\\repos\\RankingForum"
+      context: "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack"
       dockerfile: "DiscussionService/Dockerfile"
       target: "base"
       args:
@@ -57,15 +92,49 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "discussionservice:dev"
     ports:
-    - "127.0.0.1:57010:57100"
-    - "127.0.0.1:57210:57300"
+    - "127.0.0.1:57034:57100"
+    - "127.0.0.1:57234:57300"
     volumes:
-    - "C:\\Users\\Wessel van Hemert\\.nuget\\packages:/home/app/.nuget/packages"
-    - "G:\\DEV\\repos\\RankingForum\\DiscussionService:/app:rw"
-    - "G:\\DEV\\repos\\RankingForum:/src:rw"
-    - "C:\\Users\\Wessel van Hemert\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\\
-      2024.1.2\\Linux64:/opt/rider-debugger"
+    - "C:\\Users\\info\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack\\DiscussionService:/app:rw"
+    - "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack:/src:rw"
+    - "C:\\Users\\info\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2024.1.2\\\
+      Linux64:/opt/rider-debugger"
     - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.1.2\\bin:/etc/opt/rider-debugger/backend-log.xml"
-    - "C:\\Users\\Wessel van Hemert\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\\
-      DebuggerWorker\\JetBrains.Debugger.Worker.2024_5_14_17_35_22:/var/opt/rider-debugger:rw"
+    - "C:\\Users\\info\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2024_6_12_13_34_21:/var/opt/rider-debugger:rw"
+    working_dir: "/app"
+  userservice:
+    build:
+      context: "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack"
+      dockerfile: "UserService/Dockerfile"
+      target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
+    command: []
+    entrypoint:
+    - "/opt/rider-debugger/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
+    image: "userservice:dev"
+    ports:
+    - "127.0.0.1:57035:57100"
+    - "127.0.0.1:57235:57300"
+    volumes:
+    - "C:\\Users\\info\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack\\UserService:/app:rw"
+    - "C:\\DEV\\Semester 6 Ranking Forum\\beatleader-RankingForumStack:/src:rw"
+    - "C:\\Users\\info\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2024.1.2\\\
+      Linux64:/opt/rider-debugger"
+    - "C:\\Program Files\\JetBrains\\JetBrains Rider 2024.1.2\\bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "C:\\Users\\info\\AppData\\Local\\JetBrains\\Rider2024.1\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2024_6_12_13_34_21:/var/opt/rider-debugger:rw"
     working_dir: "/app"

@@ -21,6 +21,8 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
             - name: ASPNETCORE_HTTP_PORTS
               value: "8080"
             - name: RABBITMQ_HOST
@@ -47,14 +49,24 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: db-config
-                  key: discussion-db-url
+                  key: postgres-db-url
             - name: DB_NAME
               value: rf-discussion
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: postgres-user
             - name: DB_SA_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-secret
-                  key: discussion-db-password
+                  key: postgres-pass
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt-secret-key
 
 ---
 apiVersion: v1
