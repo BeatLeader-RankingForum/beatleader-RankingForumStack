@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: db-config
 data:
-  discussion-db-url: discussion-db-service
+  postgres-db-url: "10.0.0.2"

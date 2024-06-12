@@ -1,22 +1,22 @@
-apiVersion: apps/v1
+﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: discussion-service-deployment
+  name: user-service-deployment
   labels:
-    app: discussion-service
+    app: user-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: discussion-service
+      app: user-service
   template:
     metadata:
       labels:
-        app: discussion-service
+        app: user-service
     spec:
       containers:
-        - name: discussion-service
-          image: lightai39/rf-discussionservice:latest
+        - name: user-service
+          image: lightai39/rf-userservice:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -51,7 +51,7 @@ spec:
                   name: db-config
                   key: postgres-db-url
             - name: DB_NAME
-              value: rf-discussion
+              value: rf-user
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
@@ -72,10 +72,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: discussion-service-service
+  name: user-service-service
 spec:
   selector:
-    app: discussion-service
+    app: user-service
   ports:
     - protocol: TCP
       port: 8080

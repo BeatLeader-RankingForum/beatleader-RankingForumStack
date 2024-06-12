@@ -2,10 +2,25 @@
   "Routes": [
     // Discussion service
     {
-      "UpstreamPathTemplate": "/MapDiscussions/{everything}",
+      "UpstreamPathTemplate": "/MapDiscussion/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
-      "DownstreamPathTemplate": "/MapDiscussions/{everything}",
+      "DownstreamPathTemplate": "/MapDiscussion/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "discussionservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/DifficultyDiscussion/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/DifficultyDiscussion/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -32,7 +47,52 @@
 
       "DangerousAcceptAnyServerCertificateValidator": true
     },
-    // add more routes here
+    // Comment service comment
+    {
+      "UpstreamPathTemplate": "/Comment/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/Comment/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/Reply/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/Reply/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/Review/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/Review/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 8081
+        }
+      ],
+
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:3900"
