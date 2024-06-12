@@ -13,7 +13,7 @@ public class DifficultyDiscussionLogic
         _dbContext = dbContext;
     }
     
-    public async Task<LogicResponse<DifficultyDiscussion>> GetDifficultyDiscussionAsync(int id)
+    public async Task<LogicResponse<DifficultyDiscussion>> GetDifficultyDiscussionAsync(string id)
     {
         DifficultyDiscussion? difficultyDiscussion = await _dbContext.DifficultyDiscussions
             .FirstOrDefaultAsync(x => x.Id == id);
@@ -26,7 +26,7 @@ public class DifficultyDiscussionLogic
         return LogicResponse<DifficultyDiscussion>.Ok(difficultyDiscussion);
     }
 
-    public async Task<LogicResponse<List<DifficultyDiscussion>>> GetAllDifficultyDiscussionsForMapDiscussionAsync(int mapDiscussionId)
+    public async Task<LogicResponse<List<DifficultyDiscussion>>> GetAllDifficultyDiscussionsForMapDiscussionAsync(string mapDiscussionId)
     {
         List<DifficultyDiscussion> difficultyDiscussions = await _dbContext.DifficultyDiscussions
             .Where(x => x.MapDiscussionId == mapDiscussionId)
@@ -40,7 +40,7 @@ public class DifficultyDiscussionLogic
         return LogicResponse<List<DifficultyDiscussion>>.Ok(difficultyDiscussions);
     }
 
-    public async Task<LogicResponse<DifficultyDiscussion>> LockDifficultyDiscussionAsync(int id)
+    public async Task<LogicResponse<DifficultyDiscussion>> LockDifficultyDiscussionAsync(string id)
     {
         DifficultyDiscussion? difficultyDiscussion = await _dbContext.DifficultyDiscussions
             .FirstOrDefaultAsync(x => x.Id == id);
@@ -63,7 +63,7 @@ public class DifficultyDiscussionLogic
         return LogicResponse<DifficultyDiscussion>.Ok(difficultyDiscussion);
     }
     
-    public async Task<LogicResponse<DifficultyDiscussion>> UnlockDifficultyDiscussionAsync(int id)
+    public async Task<LogicResponse<DifficultyDiscussion>> UnlockDifficultyDiscussionAsync(string id)
     {
         DifficultyDiscussion? difficultyDiscussion = await _dbContext.DifficultyDiscussions
             .FirstOrDefaultAsync(x => x.Id == id);
