@@ -179,5 +179,12 @@ namespace CommentService.Controllers
             
             return Ok(response.Data);
         }
+        
+        [HttpPost("LoadtestCleanup")]
+        public async Task<IActionResult> LoadtestCleanup()
+        {
+            await _replyLogic.LoadtestCleanup();
+            return Ok();
+        }
     }
 }

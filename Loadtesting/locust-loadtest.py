@@ -121,5 +121,6 @@ class WebsiteCommentUser(HttpUser):
 def on_test_stop(environment, **kwargs):
     with WebsiteLurkUser(environment) as user:
         user.client.post("/Comment/LoadtestCleanup")
+        user.client.post("/Reply/LoadtestCleanup")
 
 events.test_stop.add_listener(on_test_stop)
