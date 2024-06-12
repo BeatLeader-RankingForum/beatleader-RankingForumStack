@@ -56,7 +56,7 @@ string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "rf-discussion"
 string dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "postgres";
 string dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "SuperStrong!";
 string connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword};";
-builder.Services.AddDbContext<DiscussionDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContextPool<DiscussionDbContext>(options => options.UseNpgsql(connectionString));
 
 // MASSTRANSIT
 builder.Services.AddMassTransit(busFactoryConfigurator =>
