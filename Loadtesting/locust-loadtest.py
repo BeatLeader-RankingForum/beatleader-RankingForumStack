@@ -1,6 +1,9 @@
 from locust import HttpUser, TaskSet, task, between, events
 import random
 import string
+import requests
+
+allComments = ['bc529f2d-95e2-4da5-a638-1c53717aac64']
 
 class OpenPostsTask(TaskSet):
 
@@ -60,14 +63,16 @@ class PostCommentTask(TaskSet):
 
     data = {
       "mapDiscussionId": "502bd2ff-ea01-4594-a299-7b797e0e030f",
-      "difficultyDiscussionId": "be0e60eb-6b02-46fa-9239-110803e381b3",
+      "difficultyDiscussionId": random.choice([None, "be0e60eb-6b02-46fa-9239-110803e381b3"]),
       "body": "This is a load-test Comment of type Suggestion! LOADTEST-54632 RS:" + random_string,
       "type": 2
     }
 
     response = self.client.post("/Comment", json=data, headers=headers)
+    response_json = response.json()
     if response.status_code == 201:
       print("Comment posted successfully!")
+      allComments.append(response_json["id"])
     else:
       print(f"Error posting comment: {response.text}")
 
@@ -88,7 +93,7 @@ class PostReplyTask(TaskSet):
     random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
 
     data = {
-      "commentId": "bc529f2d-95e2-4da5-a638-1c53717aac64 ",
+      "commentId": random.choice(allComments),
       "body": "This is a load-test reply! LOADTEST-54632 RS:" + random_string
     }
 
@@ -119,8 +124,13 @@ class WebsiteCommentUser(HttpUser):
   weight = 20
 
 def on_test_stop(environment, **kwargs):
-    with WebsiteLurkUser(environment) as user:
-        user.client.post("/Comment/LoadtestCleanup")
-        user.client.post("/Reply/LoadtestCleanup")
+    host = environment.host
+    
+    # Make a GET request to the cleanup endpoint
+    response = requests.post(host + "/Comment/LoadtestCleanup")
+    response2 = requests.post(host + "/Reply/LoadtestCleanup")
+    
+    # Optionally, log the response status for debugging
+    print(f"Cleanup request sent, response status: {response.status_code} {response2.status_code}")
 
 events.test_stop.add_listener(on_test_stop)
