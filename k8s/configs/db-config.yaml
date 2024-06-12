@@ -4,3 +4,4 @@ metadata:
   name: db-config
 data:
   postgres-db-url: "10.0.0.2"
+  postgres-db-port: "5432"
