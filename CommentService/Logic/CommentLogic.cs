@@ -329,4 +329,20 @@ public class CommentLogic
         
         return LogicResponse<GetAllMapCommentsDto>.Ok(commentsDto);
     }
+
+    public async Task LoadtestCleanup()
+    {
+        if (Environment.GetEnvironmentVariable("LOADTEST") != "true")
+        {
+            return;
+        }
+        
+        List<Comment> comments = await _dbContext.Comments
+            .Where(c => c.Body.Contains("LOADTEST-54632"))
+            .ToListAsync();
+        
+        _dbContext.RemoveRange(comments);
+        
+        await _dbContext.SaveChangesAsync();
+    }
 }

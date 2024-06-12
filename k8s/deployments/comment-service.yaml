@@ -21,7 +21,7 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: DISABLE_RATE_LIMITING
+            - name: LOADTEST
               value: "true"
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"

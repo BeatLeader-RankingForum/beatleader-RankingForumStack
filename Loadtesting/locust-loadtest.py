@@ -1,4 +1,4 @@
-from locust import HttpUser, TaskSet, task, between
+from locust import HttpUser, TaskSet, task, between, events
 import random
 import string
 
@@ -61,7 +61,7 @@ class PostCommentTask(TaskSet):
     data = {
       "mapDiscussionId": "502bd2ff-ea01-4594-a299-7b797e0e030f",
       "difficultyDiscussionId": "be0e60eb-6b02-46fa-9239-110803e381b3",
-      "body": "This is a load-test Comment of type Suggestion! RS:" + random_string,
+      "body": "This is a load-test Comment of type Suggestion! LOADTEST-54632 RS:" + random_string,
       "type": 2
     }
 
@@ -89,7 +89,7 @@ class PostReplyTask(TaskSet):
 
     data = {
       "commentId": "bc529f2d-95e2-4da5-a638-1c53717aac64 ",
-      "body": "This is a load-test reply! RS:" + random_string
+      "body": "This is a load-test reply! LOADTEST-54632 RS:" + random_string
     }
 
     response = self.client.post("/Reply", json=data, headers=headers)
@@ -111,9 +111,15 @@ class WebsiteLurkUser2(HttpUser):
 class WebsitePostUser(HttpUser):
   tasks = [PostReplyTask]
   wait_time = between(5,10)
-  weight = 1
+  weight = 10
 
 class WebsiteCommentUser(HttpUser):
   tasks = [PostCommentTask]
   wait_time = between(5,10)
-  weight = 10
+  weight = 20
+
+def on_test_stop(environment, **kwargs):
+    with WebsiteLurkUser(environment) as user:
+        user.client.post("/Comment/LoadtestCleanup")
+
+events.test_stop.add_listener(on_test_stop)
