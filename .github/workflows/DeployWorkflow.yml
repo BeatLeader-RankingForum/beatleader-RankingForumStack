@@ -17,11 +17,11 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Restore UserService dependencies
+      run: dotnet restore UserServiceUnitTest/UserServiceUnitTest.csproj
 
-    - name: Run unit tests
-      run: dotnet test
+    - name: Run UserService unit tests
+      run: dotnet test UserServiceUnitTest/UserServiceUnitTest.csproj
 
   build-and-push:
     needs: test
