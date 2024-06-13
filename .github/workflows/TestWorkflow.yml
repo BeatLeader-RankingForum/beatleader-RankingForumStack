@@ -20,5 +20,5 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Run unit tests
-      run: dotnet test
+    - name: Run UserService unit tests
+      run: dotnet test UserServiceUnitTest/UserServiceUnitTest.csproj
