@@ -64,7 +64,6 @@ public class JwtProviderTest
             var options = new DbContextOptionsBuilder<UserDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
-
             _mockDbContext = new Mock<UserDbContext>(options);
             
             // set up JwtProvider
