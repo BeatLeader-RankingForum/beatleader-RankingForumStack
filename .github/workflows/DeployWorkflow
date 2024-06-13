@@ -1,4 +1,4 @@
-name: Docker Push
+name: CI/CD Deploy to Linode
 
 on:
   push:
@@ -6,7 +6,25 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Run unit tests
+      run: dotnet test
+
   build-and-push:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -53,4 +71,32 @@ jobs:
         push: true
         tags: lightai39/rf-commentservice:latest
 
-    
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Load Kube Config
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      run: |
+        mkdir -p $HOME/.kube
+        echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
+
+    - name: Apply Kubernetes files
+      run: |
+        for file in k8s/**/*.yaml; do
+          kubectl apply -f "$file"
+        done
+
+    - name: Force Restart Deployments
+      run: |
+        kubectl rollout restart deployment -n default
+
+    - name: Verify deployment
+      run: kubectl get deployments -n default

@@ -28,6 +28,11 @@ public class JwtProvider : IJwtProvider
 
     public string GenerateJwtToken(User user)
     {
+        if (user.Id.IsNullOrEmpty())
+        {
+            throw new ArgumentException("user.Id must not be null or empty", user.Id);
+        }
+        
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id)
