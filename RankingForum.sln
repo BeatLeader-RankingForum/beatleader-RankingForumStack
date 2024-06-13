@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommentService", "CommentService\CommentService.csproj", "{F9FD3229-DDD8-4273-8ADA-CDFED9E806E1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unittesting", "Unittesting", "{BBC5C614-B2F7-4217-9BDC-DBBB1347CA97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserServiceUnitTest", "UserServiceUnitTest\UserServiceUnitTest.csproj", "{1DE7A638-57AC-4D86-96BA-98EF17C761B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,10 @@ Global
 		{F9FD3229-DDD8-4273-8ADA-CDFED9E806E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9FD3229-DDD8-4273-8ADA-CDFED9E806E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9FD3229-DDD8-4273-8ADA-CDFED9E806E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DE7A638-57AC-4D86-96BA-98EF17C761B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DE7A638-57AC-4D86-96BA-98EF17C761B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DE7A638-57AC-4D86-96BA-98EF17C761B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DE7A638-57AC-4D86-96BA-98EF17C761B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +75,7 @@ Global
 		{00C0881D-937E-4EB1-A74A-92DC539661B6} = {F1A1BF6B-51B3-4DFE-B40C-33FBF5E3EDE9}
 		{EBFCEA81-2A77-4413-9D35-D1EC4C347130} = {B00BB01C-C2FE-497F-9E0E-CB1F6F4832AC}
 		{F9FD3229-DDD8-4273-8ADA-CDFED9E806E1} = {B00BB01C-C2FE-497F-9E0E-CB1F6F4832AC}
+		{1DE7A638-57AC-4D86-96BA-98EF17C761B7} = {BBC5C614-B2F7-4217-9BDC-DBBB1347CA97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E125B797-161F-4D62-A7E1-449CEB897CD3}

@@ -83,6 +83,7 @@ namespace DiscussionService.Logic
             }
 
             List<MapDiscussion> mapDiscussions = await _dbContext.MapDiscussions.Where(x => x.Phase == phaseEnum).ToListAsync();
+            //TODO: include discussions column
 
             if (mapDiscussions.Count <= 0)
             {
