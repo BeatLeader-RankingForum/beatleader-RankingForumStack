@@ -8,10 +8,6 @@ on:
     branches:
       - '*'
 
-permissions:
-  contents: read
-  statuses: write
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -32,6 +28,10 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
     steps:
        - name: Checkout code
          uses: actions/checkout@v4
