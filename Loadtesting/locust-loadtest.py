@@ -2,6 +2,7 @@ from locust import HttpUser, TaskSet, task, between, events
 import random
 import string
 import requests
+import time
 
 allComments = ['bc529f2d-95e2-4da5-a638-1c53717aac64']
 
@@ -125,6 +126,9 @@ class WebsiteCommentUser(HttpUser):
 
 def on_test_stop(environment, **kwargs):
     host = environment.host
+
+    # waiting for everything to finish
+    time.sleep(20)
     
     # Make a GET request to the cleanup endpoint
     response = requests.post(host + "/Comment/LoadtestCleanup")
