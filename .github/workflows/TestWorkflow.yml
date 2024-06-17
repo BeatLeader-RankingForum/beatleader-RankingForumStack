@@ -1,6 +1,9 @@
 name: Run Unit Tests
 
 on:
+  push:
+    branches:
+      - '*'
   pull_request:
     branches:
       - '*'
@@ -22,3 +25,20 @@ jobs:
 
     - name: Run UserService unit tests
       run: dotnet test UserServiceUnitTest/UserServiceUnitTest.csproj
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+       - name: Checkout code
+         uses: actions/checkout@v4
+         with:
+           fetch-depth: 0
+       - name: Lint Code Base
+         uses: github/super-linter@v4
+         env:
+           VALIDATE_ALL_CODEBASE: false
+           VALIDATE_CSS: false
+           DEFAULT_BRANCH: "main"
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           IGNORE_GITIGNORED_FILES: true
+           VALIDATE_GITHUB_ACTIONS: false
