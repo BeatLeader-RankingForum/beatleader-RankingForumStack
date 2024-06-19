@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -9,25 +8,6 @@ if (builder.Environment.IsProduction())
     builder.Configuration.SetBasePath("/app/config")
         .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
         .AddEnvironmentVariables();
-
-    builder.WebHost.ConfigureKestrel(so =>
-    {
-        so.ConfigureHttpsDefaults(options =>
-        {
-            var certPath = Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__Path");
-            var keyPath = Environment.GetEnvironmentVariable("ASPNETCORE_Kestrel__Certificates__Default__KeyPath");
-
-            if (string.IsNullOrEmpty(certPath) || string.IsNullOrEmpty(keyPath))
-            {
-                throw new InvalidOperationException("Certificate path or key path is not set.");
-            }
-
-            options.ServerCertificate = new X509Certificate2(
-                Path.Combine(certPath),
-                Path.Combine(keyPath)
-            );
-        });
-    });
 }
 else
 {
