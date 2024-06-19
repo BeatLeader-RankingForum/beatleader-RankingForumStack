@@ -32,7 +32,11 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
-            builder.WithOrigins("https://rankingforum.lightai.dev/")
+        });
+    options.AddPolicy("AllowProdOrigin",
+        builder =>
+        {
+            builder.WithOrigins("https://rankingforum.lightai.dev")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -42,6 +46,8 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 app.UseCors("AllowDevOrigin");
+
+app.UseCors("AllowProdOrigin");
 
 app.MapGet("/", () => "Hello World!");
 
