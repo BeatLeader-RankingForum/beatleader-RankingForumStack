@@ -26,8 +26,18 @@ spec:
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"
-            - name: ASPNETCORE_HTTP_PORTS
-              value: "8080"
+            - name: ASPNETCORE_HTTPS_PORTS
+              value: "8081"
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+              valueFrom:
+                secretKeyRef:
+                  name: ingress-nginx
+                  key: tls.crt
+            - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
+              valueFrom:
+                secretKeyRef:
+                  name: ingress-nginx
+                  key: tls.key
       volumes:
         - name: config-volume
           configMap:
@@ -42,11 +52,9 @@ kind: Service
 metadata:
   name: api-gateway-service
 spec:
-  type: NodePort
   selector:
     app: api-gateway
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 30001
+      port: 8081
+      targetPort: 8081
