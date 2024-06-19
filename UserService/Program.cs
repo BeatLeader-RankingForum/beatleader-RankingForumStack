@@ -155,6 +155,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMetricServer();
+app.UseHttpMetrics();
 
 app.MapControllers();
 
