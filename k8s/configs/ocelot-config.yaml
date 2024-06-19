@@ -95,9 +95,55 @@ data:
           ],
           
           "DangerousAcceptAnyServerCertificateValidator": true
+        },
+        {
+          "UpstreamPathTemplate": "/DiscussionService/metrics",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/metrics",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "discussion-service-service",
+              "Port": 8080
+            }
+          ],
+          
+          "DangerousAcceptAnyServerCertificateValidator": true
+        },
+        {
+          "UpstreamPathTemplate": "/UserService/metrics",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/metrics",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "user-service-service",
+              "Port": 8080
+            }
+          ],
+          
+          "DangerousAcceptAnyServerCertificateValidator": true
+        },
+        {
+          "UpstreamPathTemplate": "/CommentService/metrics",
+          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          
+          "DownstreamPathTemplate": "/metrics",
+          "DownstreamScheme": "http",
+          "DownstreamHostAndPorts": [
+            {
+              "Host": "comment-service-service",
+              "Port": 8080
+            }
+          ],
+          
+          "DangerousAcceptAnyServerCertificateValidator": true
         }
       ],
       "GlobalConfiguration": {
         "BaseUrl": "http://api-gateway-service.default.svc.cluster.local"
       }
     }
+    

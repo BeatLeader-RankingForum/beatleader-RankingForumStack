@@ -156,6 +156,7 @@ if (Environment.GetEnvironmentVariable("LOADTEST") != "true") app.UseIpRateLimit
 app.UseAuthorization();
 
 app.UseMetricServer();
+app.UseHttpMetrics();
 
 app.MapControllers();
 
