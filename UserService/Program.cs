@@ -124,7 +124,11 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
-            builder.WithOrigins("https://rankingforum.lightai.dev/")
+        });
+    options.AddPolicy("AllowProdOrigin",
+        builder =>
+        {
+            builder.WithOrigins("https://rankingforum.lightai.dev")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -151,6 +155,8 @@ if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("JWT_SE
 JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 app.UseCors("AllowDevOrigin");
+
+app.UseCors("AllowProdOrigin");
 
 if (Environment.GetEnvironmentVariable("LOADTEST") != "true") app.UseIpRateLimiting();
 
