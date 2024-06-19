@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.OpenApi.Models;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -179,6 +180,8 @@ if (Environment.GetEnvironmentVariable("LOADTEST") != "true") app.UseIpRateLimit
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseHttpMetrics();
 
 app.MapControllers();
 
