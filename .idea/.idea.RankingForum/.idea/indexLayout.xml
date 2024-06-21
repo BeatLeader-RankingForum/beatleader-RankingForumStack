@@ -4,6 +4,7 @@
     <attachedFolders>
       <Path>.github</Path>
       <Path>Loadtesting</Path>
+      <Path>Testing</Path>
       <Path>k8s</Path>
     </attachedFolders>
     <explicitIncludes />
