@@ -138,22 +138,13 @@ builder.Services.AddInMemoryRateLimiting();
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowDevOrigin",
+    options.AddPolicy("AllowSpecificOrigins",
         builder =>
         {
-            builder.WithOrigins("http://localhost:8888")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-            builder.WithOrigins("https://localhost:5173")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
-    options.AddPolicy("AllowProdOrigin",
-        builder =>
-        {
-            builder.WithOrigins("https://rankingforum.lightai.dev")
+            builder.WithOrigins(
+                    "http://localhost:8888",
+                    "https://localhost:5173",
+                    "https://rankingforum.lightai.dev")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -179,9 +170,7 @@ if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("JWT_SE
 
 JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-app.UseCors("AllowDevOrigin");
-
-app.UseCors("AllowProdOrigin");
+app.UseCors("AllowSpecificOrigins");
 
 if (Environment.GetEnvironmentVariable("LOADTEST") != "true") app.UseIpRateLimiting();
 

@@ -21,22 +21,13 @@ builder.Services.AddOcelot(builder.Configuration);
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowDevOrigin",
+    options.AddPolicy("AllowSpecificOrigins",
         builder =>
         {
-            builder.WithOrigins("http://localhost:8888")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-            builder.WithOrigins("https://localhost:5173")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
-    options.AddPolicy("AllowProdOrigin",
-        builder =>
-        {
-            builder.WithOrigins("https://rankingforum.lightai.dev")
+            builder.WithOrigins(
+                    "http://localhost:8888",
+                    "https://localhost:5173",
+                    "https://rankingforum.lightai.dev")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -45,9 +36,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowDevOrigin");
-
-app.UseCors("AllowProdOrigin");
+app.UseCors("AllowSpecificOrigins");
 
 app.MapGet("/", () => "Hello World!");
 
