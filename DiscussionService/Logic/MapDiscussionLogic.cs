@@ -82,8 +82,7 @@ namespace DiscussionService.Logic
                 return LogicResponse<List<MapDiscussion>>.Fail($"Phase {phase} not found", LogicResponseType.BadRequest);
             }
 
-            List<MapDiscussion> mapDiscussions = await _dbContext.MapDiscussions.Where(x => x.Phase == phaseEnum).ToListAsync();
-            //TODO: include discussions column
+            List<MapDiscussion> mapDiscussions = await _dbContext.MapDiscussions.Where(x => x.Phase == phaseEnum).Include(x => x.Discussions).ToListAsync();
 
             if (mapDiscussions.Count <= 0)
             {
