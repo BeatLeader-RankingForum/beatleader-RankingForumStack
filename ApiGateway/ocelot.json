@@ -3,7 +3,7 @@
     // Discussion service
     {
       "UpstreamPathTemplate": "/MapDiscussion/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
 
       "DownstreamPathTemplate": "/MapDiscussion/{everything}",
       "DownstreamScheme": "https",
@@ -18,7 +18,7 @@
     },
     {
       "UpstreamPathTemplate": "/DifficultyDiscussion/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
 
       "DownstreamPathTemplate": "/DifficultyDiscussion/{everything}",
       "DownstreamScheme": "https",
@@ -34,7 +34,7 @@
     // User service
     {
       "UpstreamPathTemplate": "/User/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
 
       "DownstreamPathTemplate": "/User/{everything}",
       "DownstreamScheme": "https",
@@ -50,7 +50,7 @@
     // Comment service comment
     {
       "UpstreamPathTemplate": "/Comment/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
 
       "DownstreamPathTemplate": "/Comment/{everything}",
       "DownstreamScheme": "https",
@@ -65,7 +65,7 @@
     },
     {
       "UpstreamPathTemplate": "/Reply/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
 
       "DownstreamPathTemplate": "/Reply/{everything}",
       "DownstreamScheme": "https",
@@ -80,7 +80,7 @@
     },
     {
       "UpstreamPathTemplate": "/Review/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
 
       "DownstreamPathTemplate": "/Review/{everything}",
       "DownstreamScheme": "https",

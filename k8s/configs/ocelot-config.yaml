@@ -8,7 +8,7 @@ data:
       "Routes": [
         {
           "UpstreamPathTemplate": "/MapDiscussion/{everything}",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/MapDiscussion/{everything}",
           "DownstreamScheme": "http",
@@ -23,7 +23,7 @@ data:
         },
         {
           "UpstreamPathTemplate": "/DifficultyDiscussion/{everything}",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/DifficultyDiscussion/{everything}",
           "DownstreamScheme": "http",
@@ -38,7 +38,7 @@ data:
         },
         {
           "UpstreamPathTemplate": "/User/{everything}",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/User/{everything}",
           "DownstreamScheme": "http",
@@ -53,7 +53,7 @@ data:
         },
         {
           "UpstreamPathTemplate": "/Comment/{everything}",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/Comment/{everything}",
           "DownstreamScheme": "http",
@@ -68,7 +68,7 @@ data:
         },
         {
           "UpstreamPathTemplate": "/Reply/{everything}",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/Reply/{everything}",
           "DownstreamScheme": "http",
@@ -83,7 +83,7 @@ data:
         },
         {
           "UpstreamPathTemplate": "/Review/{everything}",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/Review/{everything}",
           "DownstreamScheme": "http",
@@ -98,7 +98,7 @@ data:
         },
         {
           "UpstreamPathTemplate": "/DiscussionService/metrics",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/metrics",
           "DownstreamScheme": "http",
@@ -113,7 +113,7 @@ data:
         },
         {
           "UpstreamPathTemplate": "/UserService/metrics",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/metrics",
           "DownstreamScheme": "http",
@@ -128,7 +128,7 @@ data:
         },
         {
           "UpstreamPathTemplate": "/CommentService/metrics",
-          "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+          "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" ],
           
           "DownstreamPathTemplate": "/metrics",
           "DownstreamScheme": "http",
