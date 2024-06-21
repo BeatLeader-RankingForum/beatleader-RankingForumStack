@@ -135,6 +135,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+Console.WriteLine("we are on the correct version of the project");
+
 var app = builder.Build();
 
 UserDbContext.ApplyMigrations(app);
