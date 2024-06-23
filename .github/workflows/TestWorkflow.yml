@@ -1,7 +1,7 @@
-name: Run Unit Tests
+name: Run Unit Tests and super-linter
 
 on:
-  pull_request:
+  push:
     branches:
       - '*'
 
