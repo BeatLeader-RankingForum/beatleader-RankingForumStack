@@ -111,13 +111,24 @@ public class ReplyLogic
         {
             return LogicResponse<bool>.Fail("You are not the author of this comment", LogicResponseType.Forbidden);
         }
-
-        reply.AuthorId = "anonymized";
-        reply.Body = "";
-        reply.IsDeleted = true;
-        reply.DeletedAt = DateTime.UtcNow;
         
-        _dbContext.Replies.Update(reply);
+        bool isNotLast = await _dbContext.Replies.AnyAsync(r => r.CreatedAt > reply.CreatedAt);
+        bool statusAfterReply = await _dbContext.StatusUpdates.AnyAsync(s => s.CreatedAt > reply.CreatedAt);
+
+        if (isNotLast || statusAfterReply)
+        {
+            reply.AuthorId = "anonymized";
+            reply.Body = "";
+            reply.IsDeleted = true;
+            reply.DeletedAt = DateTime.UtcNow;
+        
+            _dbContext.Replies.Update(reply);
+        }
+        else
+        {
+            _dbContext.Remove(reply);
+        }
+        
         await _dbContext.SaveChangesAsync();
         
         return LogicResponse<bool>.Ok(true);
